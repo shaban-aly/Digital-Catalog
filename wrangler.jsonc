@@ -1,15 +1,17 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "digital-menu-app",
+  "name": "digital-catalog",
   "main": "./src/server/entry-worker.ts",
   "compatibility_date": "2026-01-01",
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "workers_dev": true,
   "routes": [
     {
       "pattern": "digitalmenu.daleel-al-suez.com",
-      "custom_domain": true
+      "custom_domain": true,
+      "zone_name": "daleel-al-suez.com"
     }
   ],
   "assets": {
