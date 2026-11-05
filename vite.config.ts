@@ -19,8 +19,4 @@ export default defineConfig({
       configPath: './wrangler.jsonc',
     }),
   ],
-  ssr: {
-    target: 'webworker',
-    noExternal: true,
-  },
 });
