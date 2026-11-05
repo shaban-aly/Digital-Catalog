@@ -7,9 +7,9 @@ import { logQrScanEvent } from '../services/analytics';
  * Analytics logging is dispatched in the background without blocking the client.
  */
 export async function handleQrRedirect(request: Request, shortCode: string, ctx?: any): Promise<Response> {
-  const destinationUrl = await qrService.resolveDestination(shortCode);
+  const result = await qrService.resolveDestination(shortCode);
 
-  if (!destinationUrl) {
+  if (!result) {
     return new Response(
       `<!DOCTYPE html>
       <html dir="rtl" lang="ar">
@@ -26,6 +26,8 @@ export async function handleQrRedirect(request: Request, shortCode: string, ctx?
     );
   }
 
+  const { destinationUrl, qrId } = result;
+
   // Extract client metadata for asynchronous analytics
   const clientIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || '127.0.0.1';
   const userAgent = request.headers.get('user-agent') || '';
@@ -33,7 +35,7 @@ export async function handleQrRedirect(request: Request, shortCode: string, ctx?
 
   // Background non-blocking execution via Worker ExecutionContext
   const analyticsPromise = logQrScanEvent({
-    qrCodeId: shortCode,
+    qrCodeId: qrId,
     ipAddress: clientIp,
     userAgent,
     referrer,

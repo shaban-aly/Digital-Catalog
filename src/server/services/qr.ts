@@ -29,6 +29,11 @@ export interface QRCodeRecord {
   redirect_url: string;
 }
 
+export interface QRDestinationResult {
+  destinationUrl: string;
+  qrId: string;
+}
+
 /**
  * QR Code Service
  */
@@ -144,7 +149,7 @@ export class QRService {
   /**
    * Resolves a short code to its destination catalog URL in <50ms
    */
-  async resolveDestination(shortCode: string): Promise<string | null> {
+  async resolveDestination(shortCode: string): Promise<QRDestinationResult | null> {
     const { data: qr } = await supabase
       .from('qr_codes')
       .select(`
@@ -166,7 +171,11 @@ export class QRService {
     }
 
     const catalogSlug = (qr.catalog as any).slug;
-    return `${this.appBaseUrl}/c/${catalogSlug}`;
+    const cleanBase = this.appBaseUrl.replace(/\/+$/, '');
+    return {
+      destinationUrl: `${cleanBase}/c/${catalogSlug}`,
+      qrId: qr.id,
+    };
   }
 }
 

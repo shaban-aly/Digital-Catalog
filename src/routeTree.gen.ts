@@ -17,6 +17,7 @@ import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AdminDashboardIndexRouteImport } from './routes/_admin/dashboard/index'
 import { Route as AdminDashboardProductsRouteImport } from './routes/_admin/dashboard/products'
 import { Route as PublicCCatalogSlugRouteImport } from './routes/_public/c/$catalogSlug'
+import { Route as PublicQShortCodeRouteImport } from './routes/_public/q/$shortCode'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -57,6 +58,11 @@ const PublicCCatalogSlugRoute = PublicCCatalogSlugRouteImport.update({
   path: '/c/$catalogSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicQShortCodeRoute = PublicQShortCodeRouteImport.update({
+  id: '/_public/q/$shortCode',
+  path: '/q/$shortCode',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/products': typeof AdminDashboardProductsRoute
   '/c/$catalogSlug': typeof PublicCCatalogSlugRoute
+  '/q/$shortCode': typeof PublicQShortCodeRoute
   '/dashboard/': typeof AdminDashboardIndexRoute
 }
 export interface FileRoutesByTo {
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/products': typeof AdminDashboardProductsRoute
   '/c/$catalogSlug': typeof PublicCCatalogSlugRoute
+  '/q/$shortCode': typeof PublicQShortCodeRoute
   '/dashboard': typeof AdminDashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterRoute
   '/_admin/dashboard/products': typeof AdminDashboardProductsRoute
   '/_public/c/$catalogSlug': typeof PublicCCatalogSlugRoute
+  '/_public/q/$shortCode': typeof PublicQShortCodeRoute
   '/_admin/dashboard/': typeof AdminDashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/dashboard/products'
     | '/c/$catalogSlug'
+    | '/q/$shortCode'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/dashboard/products'
     | '/c/$catalogSlug'
+    | '/q/$shortCode'
     | '/dashboard'
   id:
     | '__root__'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/_admin/dashboard/products'
     | '/_public/c/$catalogSlug'
+    | '/_public/q/$shortCode'
     | '/_admin/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -125,6 +137,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   PublicCCatalogSlugRoute: typeof PublicCCatalogSlugRoute
+  PublicQShortCodeRoute: typeof PublicQShortCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicCCatalogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_public/q/$shortCode': {
+      id: '/_public/q/$shortCode'
+      path: '/q/$shortCode'
+      fullPath: '/q/$shortCode'
+      preLoaderRoute: typeof PublicQShortCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -207,6 +227,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   PublicCCatalogSlugRoute: PublicCCatalogSlugRoute,
+  PublicQShortCodeRoute: PublicQShortCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

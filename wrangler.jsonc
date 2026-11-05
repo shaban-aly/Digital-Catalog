@@ -8,8 +8,7 @@
   ],
   "routes": [
     {
-      "pattern": "<my-name>.daleel-al-suez.com/*",
-      "zone_name": "daleel-al-suez.com",
+      "pattern": "catalog.daleel-al-suez.com",
       "custom_domain": true
     }
   ],
