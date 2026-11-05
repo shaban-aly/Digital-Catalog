@@ -1,6 +1,6 @@
 export function handleRobotsTxt(): Response {
   const primaryDomain =
-    process.env.VITE_PUBLIC_APP_URL || 'https://<my-name>.daleel-al-suez.com';
+    process.env.VITE_PUBLIC_APP_URL || 'https://catalog.daleel-al-suez.com';
 
   const content = `User-agent: *
 Allow: /

@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS public.businesses (
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
   industry_type TEXT NOT NULL DEFAULT 'restaurant',
-  currency_code VARCHAR(3) NOT NULL DEFAULT 'SAR',
+  currency_code VARCHAR(3) NOT NULL DEFAULT 'EGP',
   phone_number TEXT,
   logo_url TEXT,
   cover_url TEXT,

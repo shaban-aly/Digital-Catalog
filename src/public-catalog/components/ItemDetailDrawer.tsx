@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { PublicProduct, ProductVariant } from '../../shared/schemas';
 import { Button } from '../../client/components/ui/Button';
 import { buildWhatsAppOrderUrl } from '../utils/whatsapp-formatter';
+import { formatCurrencySymbol } from '../../shared/currency';
 import { X, Check } from 'lucide-react';
 
 interface ItemDetailDrawerProps {
@@ -147,7 +148,7 @@ export function ItemDetailDrawer({
                     >
                       <span>{variant.name.ar}</span>
                       <span>
-                        {variant.price} {currency}
+                        {variant.price} {formatCurrencySymbol(currency)}
                       </span>
                     </button>
                   );
@@ -194,7 +195,7 @@ export function ItemDetailDrawer({
                         </div>
                         {val.price_delta > 0 && (
                           <span className="text-xs font-semibold">
-                            +{val.price_delta} {currency}
+                            +{val.price_delta} {formatCurrencySymbol(currency)}
                           </span>
                         )}
                       </button>
@@ -214,7 +215,9 @@ export function ItemDetailDrawer({
               <span className="text-xl font-black text-[var(--text-primary)]">
                 {finalTotalPrice.toFixed(2)}
               </span>
-              <span className="text-xs font-bold text-[var(--text-secondary)]">{currency}</span>
+              <span className="text-xs font-bold text-[var(--text-secondary)]">
+                {formatCurrencySymbol(currency)}
+              </span>
             </div>
           </div>
 

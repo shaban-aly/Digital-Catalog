@@ -1,6 +1,7 @@
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Plus, Trash2 } from 'lucide-react';
+import { formatCurrencySymbol } from '../../../shared/currency';
 import type { ProductVariant } from '../../../shared/schemas';
 
 interface VariantEditorProps {
@@ -64,7 +65,7 @@ export function VariantEditor({ variants, onChange, currency }: VariantEditorPro
               <div className="w-32">
                 <Input
                   type="number"
-                  placeholder={`السعر (${currency})`}
+                  placeholder={`السعر (${formatCurrencySymbol(currency)})`}
                   value={variant.price || ''}
                   onChange={(e) => updateVariant(index, { price: parseFloat(e.target.value) || 0 })}
                   className="h-9"

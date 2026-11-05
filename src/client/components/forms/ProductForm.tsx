@@ -4,6 +4,7 @@ import { Input } from '../ui/Input';
 import { VariantEditor } from './VariantEditor';
 import { compressImageToWebP } from '../../utils/image-compressor';
 import { storageService } from '../../../server/services/storage';
+import { formatCurrencySymbol } from '../../../shared/currency';
 import type { CreateProductInput, ProductVariant, ProductOptionGroup } from '../../../shared/schemas';
 import type { Category } from '../../../shared/types';
 import { Upload, X, Loader2 } from 'lucide-react';
@@ -147,7 +148,7 @@ export function ProductForm({ categories, currency, onSubmit, onCancel, isLoadin
         <Input
           type="number"
           step="0.01"
-          label={`السعر الأساسي (${currency})`}
+          label={`السعر الأساسي (${formatCurrencySymbol(currency)})`}
           placeholder="0.00"
           value={basePrice}
           onChange={(e) => setBasePrice(e.target.value)}
@@ -155,7 +156,7 @@ export function ProductForm({ categories, currency, onSubmit, onCancel, isLoadin
         <Input
           type="number"
           step="0.01"
-          label={`السعر قبل الخصم (${currency} - اختياري)`}
+          label={`السعر قبل الخصم (${formatCurrencySymbol(currency)} - اختياري)`}
           placeholder="0.00"
           value={compareAtPrice}
           onChange={(e) => setCompareAtPrice(e.target.value)}

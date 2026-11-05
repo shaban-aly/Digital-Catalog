@@ -14,7 +14,7 @@ export class BusinessService {
    * Initializes a new business profile and its default branch for an authenticated merchant
    */
   async createBusiness(userId: string, input: CreateBusinessInput): Promise<Business> {
-    const { name, slug, industryType = 'restaurant', currencyCode = 'SAR', phoneNumber } = input;
+    const { name, slug, industryType = 'restaurant', currencyCode = 'EGP', phoneNumber } = input;
 
     // Clean slug
     const cleanSlug = slug

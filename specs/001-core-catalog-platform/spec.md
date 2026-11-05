@@ -36,15 +36,15 @@ An end consumer navigates to a store's public catalog link on their smartphone (
 
 **Acceptance Scenarios**:
 
-1. **Given** an active published catalog, **When** a consumer opens `https://<my-name>.daleel-al-suez.com/c/:catalogSlug` on a mobile device, **Then** the full page content (store info, category pills, and product cards) is displayed without requiring user login or application download.
-2. **Given** a product with multiple size variants (e.g., Small: 20 SAR, Large: 35 SAR) and optional modifiers (e.g., Extra Cheese: +5 SAR), **When** a consumer selects "Large" and checks "Extra Cheese", **Then** the displayed total price immediately updates to 40 SAR.
+1. **Given** an active published catalog, **When** a consumer opens `https://catalog.daleel-al-suez.com/c/:catalogSlug` on a mobile device, **Then** the full page content (store info, category pills, and product cards) is displayed without requiring user login or application download.
+2. **Given** a product with multiple size variants (e.g., Small: 20 ج.م, Large: 35 ج.م) and optional modifiers (e.g., Extra Cheese: +5 ج.م), **When** a consumer selects "Large" and checks "Extra Cheese", **Then** the displayed total price immediately updates to 40 ج.م.
 3. **Given** a consumer sharing the catalog link on WhatsApp or social media, **When** the link preview renders, **Then** an accurate title, description, and store logo image are displayed.
 
 ---
 
 ### User Story 3 - Permanent Dynamic QR Code Generation & Routing (Priority: P3)
 
-A merchant generates and downloads a permanent QR code for their catalog. The QR code encodes a stable short redirect URL (`https://<my-name>.daleel-al-suez.com/q/:shortCode`). When a customer scans the physical QR code with their mobile phone camera, the system instantly redirects them to the store's current active catalog without noticeable delay, while privately and asynchronously recording the visit.
+A merchant generates and downloads a permanent QR code for their catalog. The QR code encodes a stable short redirect URL (`https://catalog.daleel-al-suez.com/q/:shortCode`). When a customer scans the physical QR code with their mobile phone camera, the system instantly redirects them to the store's current active catalog without noticeable delay, while privately and asynchronously recording the visit.
 
 **Why this priority**: Physical QR codes printed on table tents, menus, or shop windows cannot be reprinted every time a catalog title or slug changes. A stable redirect is essential for real-world viability.
 
@@ -53,7 +53,7 @@ A merchant generates and downloads a permanent QR code for their catalog. The QR
 **Acceptance Scenarios**:
 
 1. **Given** a published catalog, **When** the merchant accesses the QR section of their dashboard, **Then** they can preview and download their unique QR code in high-resolution PNG and vector SVG formats.
-2. **Given** a customer scanning `https://<my-name>.daleel-al-suez.com/q/:shortCode`, **When** the request hits the server, **Then** an immediate HTTP 302 redirection is issued to the destination catalog URL within 100 milliseconds.
+2. **Given** a customer scanning `https://catalog.daleel-al-suez.com/q/:shortCode`, **When** the request hits the server, **Then** an immediate HTTP 302 redirection is issued to the destination catalog URL within 100 milliseconds.
 3. **Given** an automated preview crawler (such as the WhatsApp link preview bot), **When** it fetches the QR URL, **Then** the system serves the preview metadata without artificially inflating human scan analytics.
 
 ---
@@ -68,7 +68,7 @@ A consumer browsing a merchant's digital catalog decides to place an order or in
 
 **Acceptance Scenarios**:
 
-1. **Given** a customer viewing a product with selected options, **When** they click "Order via WhatsApp", **Then** WhatsApp opens targeting the merchant's configured phone number with an encoded message: e.g., *"Hello [Store Name], I would like to order: 1x [Product Name] (Size: Large, Extras: Cheese) - Total: 40 SAR"*.
+1. **Given** a customer viewing a product with selected options, **When** they click "Order via WhatsApp", **Then** WhatsApp opens targeting the merchant's configured phone number with an encoded message: e.g., *"Hello [Store Name], I would like to order: 1x [Product Name] (Size: Large, Extras: Cheese) - Total: 40 ج.م"*.
 2. **Given** a merchant who has not configured a WhatsApp phone number, **When** the catalog renders, **Then** the WhatsApp action gracefully adjusts to an inquiry or phone call button, or is omitted without breaking page layout.
 
 ---
@@ -146,7 +146,7 @@ A merchant logs into their dashboard to monitor engagement. They view total scan
 ## Assumptions
 
 - **Target Operating Budget**: The system operates at $0 initial monthly hosting cost utilizing the Cloudflare Workers Free and Supabase Free tiers.
-- **Primary Domain Availability**: All public catalog, admin, and QR traffic routes through the designated primary domain `https://<my-name>.daleel-al-suez.com/`.
+- **Primary Domain Availability**: All public catalog, admin, and QR traffic routes through the designated primary domain `https://catalog.daleel-al-suez.com/`.
 - **Consumer Device Profile**: 90%+ of consumer catalog visits occur on smartphones (iOS and Android mobile browsers).
 - **Payment Processing**: Merchant billing and consumer digital payments are explicitly deferred; all commercial transactions are finalized offline or via WhatsApp.
 - **Language Priority**: Interface copy, error messaging, and layouts prioritize Arabic (RTL) first, with English (LTR) as a secondary option.

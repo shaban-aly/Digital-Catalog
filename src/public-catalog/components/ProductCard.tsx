@@ -1,5 +1,6 @@
 import type { PublicProduct } from '../../shared/schemas';
 import { Card, Badge } from '../../client/components/ui/Card';
+import { formatCurrencySymbol } from '../../shared/currency';
 
 interface ProductCardProps {
   product: PublicProduct;
@@ -71,7 +72,7 @@ export function ProductCard({ product, currency, onSelect }: ProductCardProps) {
               {hasVariants ? `من ${startingPrice}` : startingPrice}
             </span>
             <span className="text-[11px] font-bold text-[var(--text-secondary)]">
-              {currency}
+              {formatCurrencySymbol(currency)}
             </span>
 
             {product.compare_at_price && product.compare_at_price > startingPrice && (

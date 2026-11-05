@@ -42,11 +42,12 @@ Unlike complex e-commerce platforms (Shopify, Salla, Zid) that demand payment ga
   - Cloudflare Workers Free: 100,000 requests/day, 10ms CPU execution limit per request.
   - Supabase Free: 500 MB database, 1 GB storage, 2 GB egress bandwidth.
   - Merchant Quotas: 1 business, 1 catalog, 100 master products, 15 categories, 3 images per product (<100KB WebP), 1 default branch.
-  - Single primary domain: `https://<my-name>.daleel-al-suez.com/`.
+  - Currency: Egyptian Pound (EGP / ج.م) as default standard.
+  - Single primary domain: `https://catalog.daleel-al-suez.com/`.
 
 ## Brand Commitments
 
-- **Domain**: `https://<my-name>.daleel-al-suez.com/`.
+- **Domain**: `https://catalog.daleel-al-suez.com/`.
 - **Identity & Voice**: Clean, trustworthy, utilitarian, modern SaaS with regional Arabic authenticity.
 - **Growth Mechanic**: Discreet, elegant viral badge on free public catalogs: *"أنشئ كتالوجك مجاناً عبر دليل السويس"* / *"Powered by Daleel Al-Suez"*.
 

@@ -67,6 +67,7 @@ function RegisterPage() {
         name: storeName.trim(),
         slug: storeSlug.trim() || storeName.trim(),
         industryType,
+        currencyCode: 'EGP',
         phoneNumber: phoneNumber.trim() || undefined,
       });
 

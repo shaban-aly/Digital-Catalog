@@ -205,7 +205,9 @@ function DashboardProductsPage() {
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className="text-[11px] text-[var(--text-muted)]">{category?.name.ar}</span>
                         <span className="text-xs font-extrabold text-[var(--text-primary)]">
-                          {p.base_price ? `${p.base_price} ${business?.currency_code}` : 'حسب الاختيار'}
+                          {p.base_price
+                            ? `${p.base_price} ${business?.currency_code === 'EGP' ? 'ج.م' : (business?.currency_code || 'ج.م')}`
+                            : 'حسب الاختيار'}
                         </span>
                         {!isAvailable && <Badge variant="danger">غير متوفر</Badge>}
                       </div>
@@ -231,7 +233,7 @@ function DashboardProductsPage() {
             <h3 className="text-base font-extrabold text-[var(--text-primary)] mb-4">إضافة منتج جديد للكتالوج</h3>
             <ProductForm
               categories={categories}
-              currency={business?.currency_code || 'SAR'}
+              currency={business?.currency_code === 'EGP' ? 'ج.م' : (business?.currency_code || 'ج.م')}
               onSubmit={handleCreateProduct}
               onCancel={() => setIsAddProductOpen(false)}
             />

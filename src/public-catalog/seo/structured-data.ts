@@ -63,7 +63,7 @@ export function buildCatalogMeta(catalogPayload: PublicCatalogPayload, canonical
   const { business } = catalogPayload;
   const title = `${business.name} - الكتالوج الرقمي وقائمة الأسعار`;
   const description = `تصفح أحدث منتجات وقائمة أسعار ${business.name}، واطلب مباشرة عبر WhatsApp.`;
-  const image = business.cover_url || business.logo_url || 'https://<my-name>.daleel-al-suez.com/og-default.png';
+  const image = business.cover_url || business.logo_url || 'https://catalog.daleel-al-suez.com/og-default.png';
 
   return [
     { title },

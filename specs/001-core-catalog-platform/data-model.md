@@ -42,7 +42,7 @@ Represents the merchant's business entity.
 - `name` (TEXT, NOT NULL)
 - `slug` (TEXT, UNIQUE, NOT NULL) — e.g., `alfanoos-restaurant`
 - `industry_type` (TEXT, NOT NULL, DEFAULT `'restaurant'`) — `restaurant`, `grocery`, `fashion`, `services`
-- `currency_code` (VARCHAR(3), NOT NULL, DEFAULT `'SAR'`)
+- `currency_code` (VARCHAR(3), NOT NULL, DEFAULT `'EGP'`) — e.g. Egyptian Pound (EGP / ج.م)
 - `phone_number` (TEXT, NULL) — International format for WhatsApp ordering
 - `logo_url` (TEXT, NULL)
 - `cover_url` (TEXT, NULL)

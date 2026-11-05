@@ -33,7 +33,7 @@ export class SupabaseStorageProvider implements IStorageProvider {
     this.customDomainBase =
       import.meta.env.VITE_PUBLIC_APP_URL ||
       process.env.VITE_PUBLIC_APP_URL ||
-      'https://<my-name>.daleel-al-suez.com';
+      'https://catalog.daleel-al-suez.com';
   }
 
   async upload(

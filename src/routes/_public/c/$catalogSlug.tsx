@@ -19,7 +19,7 @@ export const Route = createFileRoute('/_public/c/$catalogSlug')({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) return {};
-    const canonicalUrl = `https://<my-name>.daleel-al-suez.com/c/${params.catalogSlug}`;
+    const canonicalUrl = `https://catalog.daleel-al-suez.com/c/${params.catalogSlug}`;
     return {
       meta: buildCatalogMeta(loaderData, canonicalUrl),
       scripts: [
