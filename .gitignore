@@ -33,6 +33,9 @@ Digital-Catalog.md
 # Wrangler
 .wrangler
 
+# Supabase CLI temp files
+supabase/.temp/
+
 .agent
 .agents
 .specfiy
