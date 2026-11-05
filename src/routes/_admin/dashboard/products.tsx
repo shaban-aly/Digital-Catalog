@@ -76,6 +76,22 @@ function DashboardProductsPage() {
     );
   }
 
+  if (!business) {
+    return (
+      <div className="p-8 max-w-md mx-auto text-center space-y-4 bg-white rounded-2xl border border-[var(--border-subtle)] my-12 shadow-sm">
+        <h2 className="text-base font-bold text-[var(--text-primary)]">لم يتم العثور على متجر مرتبط بهذا الحساب</h2>
+        <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+          يرجى إكمال بيانات المتجر أولاً لتتمكن من إضافة وإدارة الأقسام والمنتجات.
+        </p>
+        <a href="/auth/register" className="inline-block w-full">
+          <Button variant="primary" size="md" className="w-full">
+            إعداد متجرك التجاري الآن
+          </Button>
+        </a>
+      </div>
+    );
+  }
+
   const filteredProducts = products.filter((p) => {
     const matchesCategory = selectedCategory ? p.category_id === selectedCategory : true;
     const matchesSearch = searchQuery

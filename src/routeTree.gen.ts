@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/_admin'
+import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AdminDashboardIndexRouteImport } from './routes/_admin/dashboard/index'
@@ -19,6 +21,15 @@ import { Route as PublicCCatalogSlugRouteImport } from './routes/_public/c/$cata
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -32,14 +43,14 @@ const AuthRegisterRoute = AuthRegisterRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminDashboardIndexRoute = AdminDashboardIndexRouteImport.update({
-  id: '/_admin/dashboard/',
+  id: '/dashboard/',
   path: '/dashboard/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminDashboardProductsRoute = AdminDashboardProductsRouteImport.update({
-  id: '/_admin/dashboard/products',
+  id: '/dashboard/products',
   path: '/dashboard/products',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AdminRoute,
 } as any)
 const PublicCCatalogSlugRoute = PublicCCatalogSlugRouteImport.update({
   id: '/_public/c/$catalogSlug',
@@ -49,6 +60,7 @@ const PublicCCatalogSlugRoute = PublicCCatalogSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/products': typeof AdminDashboardProductsRoute
@@ -57,6 +69,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/dashboard/products': typeof AdminDashboardProductsRoute
@@ -66,6 +79,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_admin': typeof AdminRouteWithChildren
+  '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/_admin/dashboard/products': typeof AdminDashboardProductsRoute
@@ -76,6 +91,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
     | '/dashboard/products'
@@ -84,6 +100,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
     | '/dashboard/products'
@@ -92,6 +109,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_admin'
+    | '/auth/callback'
     | '/auth/login'
     | '/auth/register'
     | '/_admin/dashboard/products'
@@ -101,11 +120,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AuthCallbackRoute: typeof AuthCallbackRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
-  AdminDashboardProductsRoute: typeof AdminDashboardProductsRoute
   PublicCCatalogSlugRoute: typeof PublicCCatalogSlugRoute
-  AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -115,6 +134,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/login': {
@@ -136,14 +169,14 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AdminDashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_admin/dashboard/products': {
       id: '/_admin/dashboard/products'
       path: '/dashboard/products'
       fullPath: '/dashboard/products'
       preLoaderRoute: typeof AdminDashboardProductsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_public/c/$catalogSlug': {
       id: '/_public/c/$catalogSlug'
@@ -155,13 +188,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminDashboardProductsRoute: typeof AdminDashboardProductsRoute
+  AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminDashboardProductsRoute: AdminDashboardProductsRoute,
+  AdminDashboardIndexRoute: AdminDashboardIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AuthCallbackRoute: AuthCallbackRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
-  AdminDashboardProductsRoute: AdminDashboardProductsRoute,
   PublicCCatalogSlugRoute: PublicCCatalogSlugRoute,
-  AdminDashboardIndexRoute: AdminDashboardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

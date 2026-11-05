@@ -60,13 +60,21 @@ function DashboardOverviewPage() {
 
   if (!business) {
     return (
-      <div className="p-8 text-center text-[var(--text-muted)]">
-        لم يتم العثور على نشاط تجاري مرتبط بهذا الحساب.
+      <div className="p-8 max-w-md mx-auto text-center space-y-4 bg-white rounded-2xl border border-[var(--border-subtle)] my-12 shadow-sm">
+        <h2 className="text-base font-bold text-[var(--text-primary)]">لم يتم العثور على متجر مرتبط بهذا الحساب</h2>
+        <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+          يبدو أنك لم تكمل إعداد بيانات متجرك بعد. يمكنك إنشاء وتجهيز نشاطك التجاري الآن في خطوة واحدة مجاناً.
+        </p>
+        <a href="/auth/register" className="inline-block w-full">
+          <Button variant="primary" size="md" className="w-full">
+            إعداد متجرك التجاري الآن
+          </Button>
+        </a>
       </div>
     );
   }
 
-  const catalogPublicUrl = `https://<my-name>.daleel-al-suez.com/c/${business.slug}`;
+  const catalogPublicUrl = `/c/${business.slug}`;
 
   return (
     <div className="p-4 sm:p-6 space-y-6 text-right max-w-5xl mx-auto">

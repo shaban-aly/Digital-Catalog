@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { QrCode, Smartphone, MessageCircle, Zap, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { QrCode, Smartphone, MessageCircle, Zap, ArrowLeft, CheckCircle2, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '@/client/hooks/use-auth';
 import { Button } from '@/client/components/ui/Button';
 
 export const Route = createFileRoute('/')({
@@ -7,6 +8,7 @@ export const Route = createFileRoute('/')({
 });
 
 function HomePage() {
+  const { user } = useAuth();
   return (
     <div className="min-h-screen bg-[var(--bg-app)] text-[var(--text-primary)]">
       {/* Top Navbar */}
@@ -19,14 +21,23 @@ function HomePage() {
             <span className="font-extrabold text-lg text-[var(--brand-primary)]">دليل السويس</span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Link to="/auth/login">
-              <Button variant="ghost" size="sm">تسجيل الدخول</Button>
+          {user ? (
+            <Link to="/dashboard">
+              <Button size="sm" className="gap-1.5 font-bold">
+                <LayoutDashboard size={14} />
+                <span>لوحة إدارة المتجر</span>
+              </Button>
             </Link>
-            <Link to="/auth/register">
-              <Button size="sm">ابدأ مجاناً</Button>
-            </Link>
-          </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link to="/auth/login">
+                <Button variant="ghost" size="sm">تسجيل الدخول</Button>
+              </Link>
+              <Link to="/auth/register">
+                <Button size="sm">ابدأ مجاناً</Button>
+              </Link>
+            </div>
+          )}
         </div>
       </header>
 
@@ -47,17 +58,28 @@ function HomePage() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
-          <Link to="/auth/register" className="w-full sm:w-auto">
-            <Button size="lg" className="w-full sm:w-auto px-8 gap-2 font-bold shadow-lg shadow-emerald-700/20">
-              <span>أنشئ كتالوجك مجاناً الآن</span>
-              <ArrowLeft className="w-4 h-4" />
-            </Button>
-          </Link>
-          <Link to="/auth/login" className="w-full sm:w-auto">
-            <Button variant="outline" size="lg" className="w-full sm:w-auto px-6">
-              لوحة إدارة المتجر
-            </Button>
-          </Link>
+          {user ? (
+            <Link to="/dashboard" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto px-8 gap-2 font-bold shadow-lg shadow-emerald-700/20">
+                <LayoutDashboard className="w-4 h-4" />
+                <span>الذهاب إلى لوحة إدارة المتجر</span>
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/auth/register" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto px-8 gap-2 font-bold shadow-lg shadow-emerald-700/20">
+                  <span>أنشئ كتالوجك مجاناً الآن</span>
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link to="/auth/login" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto px-6">
+                  لوحة إدارة المتجر
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Feature badges */}
