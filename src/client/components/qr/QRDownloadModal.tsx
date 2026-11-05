@@ -10,22 +10,30 @@ interface QRDownloadModalProps {
 }
 
 export function QRDownloadModal({ shortCode, storeName, redirectUrl, onClose }: QRDownloadModalProps) {
-  // Generate high-resolution QR image URL via standard QR API / canvas
+  // Ensure a valid URL is always present to prevent 'malformed create-qr-code' errors
+  const fallbackUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/q/${shortCode || 'code'}`
+      : `https://<my-name>.daleel-al-suez.com/q/${shortCode || 'code'}`;
+
+  const resolvedUrl = redirectUrl && redirectUrl.trim() ? redirectUrl.trim() : fallbackUrl;
+
+  // Generate high-resolution QR image URL via standard QR API
   const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(
-    redirectUrl
+    resolvedUrl
   )}&margin=10`;
 
   const handleDownload = async (format: 'png' | 'svg') => {
     const downloadUrl =
       format === 'svg'
         ? `https://api.qrserver.com/v1/create-qr-code/?size=500x500&format=svg&data=${encodeURIComponent(
-            redirectUrl
+            resolvedUrl
           )}`
         : qrApiUrl;
 
     const link = document.createElement('a');
     link.href = downloadUrl;
-    link.download = `qr-${shortCode}.${format}`;
+    link.download = `qr-${shortCode || 'store'}.${format}`;
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
@@ -56,7 +64,7 @@ export function QRDownloadModal({ shortCode, storeName, redirectUrl, onClose }: 
         {/* Stable URL pill */}
         <div className="bg-[var(--bg-surface-subtle)] p-2 rounded-[var(--radius-md)] border border-[var(--border-subtle)]">
           <span className="text-[11px] font-mono text-[var(--text-secondary)] select-all" dir="ltr">
-            {redirectUrl}
+            {resolvedUrl}
           </span>
         </div>
 

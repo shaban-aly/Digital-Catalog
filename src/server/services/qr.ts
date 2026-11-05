@@ -15,7 +15,7 @@ export function generateShortCode(length = 6): string {
 
 export interface CreateQRCodeParams {
   businessId: string;
-  catalogId: string;
+  catalogId?: string;
 }
 
 export interface QRCodeRecord {
@@ -46,21 +46,62 @@ export class QRService {
    * Generates and persists a stable dynamic QR code for a catalog
    */
   async getOrCreateQRCode(params: CreateQRCodeParams): Promise<QRCodeRecord> {
-    const { businessId, catalogId } = params;
+    const { businessId } = params;
+    let catalogId = params.catalogId;
 
-    // Check if an active QR code already exists for this catalog
-    const { data: existing } = await supabase
+    // Fallback: If catalogId is missing or identical to businessId, find the primary catalog
+    if (!catalogId || catalogId === businessId) {
+      const { data: cat } = await supabase
+        .from('catalogs')
+        .select('id')
+        .eq('business_id', businessId)
+        .order('created_at', { ascending: true })
+        .limit(1)
+        .maybeSingle();
+
+      if (cat) {
+        catalogId = cat.id;
+      }
+    }
+
+    const cleanBase = this.appBaseUrl.replace(/\/+$/, '');
+
+    // Check if an active QR code already exists for this business/catalog
+    const query = supabase
       .from('qr_codes')
       .select('*')
-      .eq('catalog_id', catalogId)
-      .eq('is_active', true)
-      .maybeSingle();
+      .eq('business_id', businessId)
+      .eq('is_active', true);
+
+    if (catalogId) {
+      query.eq('catalog_id', catalogId);
+    }
+
+    const { data: existing } = await query.maybeSingle();
 
     if (existing) {
       return {
         ...existing,
-        redirect_url: `${this.appBaseUrl}/q/${existing.short_code}`,
+        redirect_url: `${cleanBase}/q/${existing.short_code}`,
       };
+    }
+
+    // Auto-create a primary catalog if one doesn't exist yet
+    if (!catalogId) {
+      const { data: newCat } = await supabase
+        .from('catalogs')
+        .insert({
+          business_id: businessId,
+          name: 'قائمة المتجر الرئيسية',
+          slug: 'menu',
+          is_published: true,
+        })
+        .select('id')
+        .single();
+
+      if (newCat) {
+        catalogId = newCat.id;
+      }
     }
 
     // Generate unique short code with collision retry
@@ -83,7 +124,7 @@ export class QRService {
       .from('qr_codes')
       .insert({
         business_id: businessId,
-        catalog_id: catalogId,
+        catalog_id: catalogId || businessId,
         short_code: shortCode,
         is_active: true,
       })
@@ -96,7 +137,7 @@ export class QRService {
 
     return {
       ...created,
-      redirect_url: `${this.appBaseUrl}/q/${created.short_code}`,
+      redirect_url: `${cleanBase}/q/${created.short_code}`,
     };
   }
 

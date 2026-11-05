@@ -32,7 +32,7 @@ function DashboardOverviewPage() {
           setBusiness(b);
           const [m, qr] = await Promise.all([
             analyticsService.getBusinessMetrics(b.id),
-            qrService.getOrCreateQRCode({ businessId: b.id, catalogId: b.id }),
+            qrService.getOrCreateQRCode({ businessId: b.id }),
           ]);
           setMetrics(m);
           setQrRedirectUrl(qr.redirect_url);
