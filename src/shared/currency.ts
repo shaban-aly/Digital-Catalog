@@ -25,3 +25,4 @@ export function formatPrice(amount: number | null | undefined, currency: string 
   if (amount === null || amount === undefined) return '';
   return `${amount} ${formatCurrencySymbol(currency)}`;
 }
+

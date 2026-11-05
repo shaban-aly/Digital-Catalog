@@ -21,7 +21,7 @@ The platform is designed to operate reliably at $0 monthly infrastructure cost d
 PostgreSQL Row Level Security (RLS) is the supreme, unbypassable security boundary. Client-side route guards and UI state checks are strictly for UX flow and are never considered security mechanisms. Authentication is managed via Supabase Auth (JWT). Multi-tenant isolation is strictly enforced at the database layer using `tenant_id` / `business_id`. The Supabase Service Role Key is strictly barred from client-side bundles and public runtime code; its use is restricted exclusively to isolated background administrative scripts and system webhooks.
 
 ### IV. Mobile-First & Edge-Rendered Public Experience
-The public catalog is the core consumer-facing product and must achieve sub-second perceived load times on mobile networks. Public catalog routes (`/c/:catalogSlug`) MUST be Server-Side Rendered (SSR) on Cloudflare Workers and cached at Cloudflare CDN edge nodes. Every public catalog must include complete dynamic OpenGraph preview cards for WhatsApp/social sharing, canonical links to `https://catalog.daleel-al-suez.com/`, and valid Schema.org JSON-LD structured data.
+The public catalog is the core consumer-facing product and must achieve sub-second perceived load times on mobile networks. Public catalog routes (`/c/:catalogSlug`) MUST be Server-Side Rendered (SSR) on Cloudflare Workers and cached at Cloudflare CDN edge nodes. Every public catalog must include complete dynamic OpenGraph preview cards for WhatsApp/social sharing, canonical links to `https://digitalmenu.daleel-al-suez.com/`, and valid Schema.org JSON-LD structured data.
 
 ### V. Decoupled Catalog Domain & Hierarchical Pricing
 The domain model strictly decouples master inventory from presentation placement:
@@ -42,7 +42,7 @@ The platform's user interface must embody the highest standards of product desig
 - **Routing & State**: TanStack Router (type-safe file-based routing), TanStack Query (server state), TanStack Form (form state), TanStack Table (data grids).
 - **Deployment & Edge Engine**: Cloudflare Workers via `@cloudflare/vite-plugin`, `@tanstack/react-start/plugin/vite`, and `wrangler.jsonc`.
 - **Primary Domain & URL Architecture**:
-  - Base: `https://catalog.daleel-al-suez.com/` (Default Currency: EGP / ج.م)
+  - Base: `https://digitalmenu.daleel-al-suez.com/` (Default Currency: EGP / ج.م)
   - Edge SSL: Cloudflare Universal SSL/TLS (HTTPS enforced).
   - DNS Isolation: Zero interference with apex domain `daleel-al-suez.com` records (MX, root A, TXT).
   - Fallback: `*.workers.dev` retained strictly for internal staging previews.

@@ -13,11 +13,11 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
       },
       {
-        title: 'دليل السويس - منصة الكتالوج الرقمي وقوائم الأسعار',
+        title: 'ديجيتال منيو (Digital Menu) - منصة المنيو الإلكتروني وقوائم الأسعار',
       },
       {
         name: 'description',
-        content: 'المنصة الرقمية الأولى لإنشاء وإدارة الكتالوجات وقوائم الأسعار الرقمية ورموز QR للمتاجر والمطاعم.',
+        content: 'المنصة الرقمية لإنشاء وإدارة المنيو الرقمي وقوائم الأسعار ورموز QR الذكية للمطاعم والكافيهات والمتاجر - دليل السويس.',
       },
     ],
     links: [

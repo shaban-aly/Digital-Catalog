@@ -61,9 +61,9 @@ export function buildCatalogJsonLd(catalogPayload: PublicCatalogPayload, current
  */
 export function buildCatalogMeta(catalogPayload: PublicCatalogPayload, canonicalUrl: string) {
   const { business } = catalogPayload;
-  const title = `${business.name} - الكتالوج الرقمي وقائمة الأسعار`;
-  const description = `تصفح أحدث منتجات وقائمة أسعار ${business.name}، واطلب مباشرة عبر WhatsApp.`;
-  const image = business.cover_url || business.logo_url || 'https://catalog.daleel-al-suez.com/og-default.png';
+  const title = `${business.name} - ديجيتال منيو وقائمة الأسعار`;
+  const description = `تصفح أحدث منتجات وقائمة أسعار ${business.name} عبر ديجيتال منيو، واطلب مباشرة عبر WhatsApp.`;
+  const image = business.cover_url || business.logo_url || 'https://digitalmenu.daleel-al-suez.com/og-default.png';
 
   return [
     { title },
@@ -73,7 +73,7 @@ export function buildCatalogMeta(catalogPayload: PublicCatalogPayload, canonical
     { property: 'og:image', content: image },
     { property: 'og:url', content: canonicalUrl },
     { property: 'og:type', content: 'website' },
-    { property: 'og:site_name', content: 'دليل السويس - Digital Catalog' },
+    { property: 'og:site_name', content: 'ديجيتال منيو - Digital Menu (دليل السويس)' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'robots', content: 'index, follow' },
   ];

@@ -42,7 +42,7 @@ High-resolution smartphone photos (3MB to 10MB) would instantly exhaust the 1GB 
   - Compression quality target: `0.80`.
   - Resulting file size: **50KB - 95KB** (98% reduction from camera raw).
 - **CDN Image Proxying**:
-  - Public image URLs are rewritten to pass through `https://<my-name>.daleel-al-suez.com/storage/v1/object/public/...`.
+  - Public image URLs are rewritten to pass through `https://digitalmenu.daleel-al-suez.com/storage/v1/object/public/...`.
   - Cloudflare edge caches image assets with `max-age=2592000` (30 days).
   - Origin egress from Supabase Storage is called at most once per image per Cloudflare POP, keeping Supabase monthly egress strictly under 100MB even under high traffic.
 

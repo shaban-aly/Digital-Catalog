@@ -19,7 +19,7 @@ export const Route = createFileRoute('/_public/c/$catalogSlug')({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) return {};
-    const canonicalUrl = `https://catalog.daleel-al-suez.com/c/${params.catalogSlug}`;
+    const canonicalUrl = `https://digitalmenu.daleel-al-suez.com/c/${params.catalogSlug}`;
     return {
       meta: buildCatalogMeta(loaderData, canonicalUrl),
       scripts: [
@@ -93,9 +93,9 @@ function PublicCatalogPage() {
 
       {/* Viral Growth Badge */}
       <footer className="text-center py-4 border-t border-[var(--border-subtle)] text-[11px] text-[var(--text-muted)]">
-        <span>أنشئ كتالوجك الرقمي مجاناً عبر </span>
+        <span>أنشئ المنيو الإلكتروني مجاناً عبر </span>
         <a href="/" className="font-bold text-[var(--text-primary)] hover:underline">
-          دليل السويس
+          ديجيتال منيو
         </a>
       </footer>
     </div>

@@ -44,7 +44,7 @@ export class QRService {
     this.appBaseUrl =
       import.meta.env.VITE_PUBLIC_APP_URL ||
       process.env.VITE_PUBLIC_APP_URL ||
-      'https://catalog.daleel-al-suez.com';
+      'https://digitalmenu.daleel-al-suez.com';
   }
 
   /**

@@ -22,7 +22,7 @@ description: "Task list for Core Digital Catalog & QR Platform implementation"
 
 - [x] T001 Configure Tailwind CSS with Arabic RTL support and semantic design tokens in `tailwind.config.ts` and `src/client/styles/globals.css`
 - [x] T002 [P] Configure TanStack Start with `@cloudflare/vite-plugin` and `@tanstack/react-start/plugin/vite` in `vite.config.ts`
-- [x] T003 [P] Setup Cloudflare Workers configuration with custom domain route `catalog.daleel-al-suez.com` in `wrangler.jsonc`
+- [x] T003 [P] Setup Cloudflare Workers configuration with custom domain route `digitalmenu.daleel-al-suez.com` in `wrangler.jsonc`
 - [x] T004 [P] Setup Supabase client initialization with PostgREST HTTPS and environment variables in `src/server/db/supabase.ts`
 - [x] T005 [P] Setup shared Zod validation schemas and TypeScript types in `src/shared/schemas.ts` and `src/shared/types.ts`
 
@@ -66,7 +66,7 @@ description: "Task list for Core Digital Catalog & QR Platform implementation"
 
 ## Phase 4: User Story 2 - Consumer Public Catalog Browsing (Priority: P2)
 
-**Goal**: An end consumer visits `https://catalog.daleel-al-suez.com/c/:catalogSlug` on a mobile browser; page loads in under 1.2s via Edge SSR, displays store logo, categories, product cards, detail drawer with variant/option selections, and dynamic price calculation.
+**Goal**: An end consumer visits `https://digitalmenu.daleel-al-suez.com/c/:catalogSlug` on a mobile browser; page loads in under 1.2s via Edge SSR, displays store logo, categories, product cards, detail drawer with variant/option selections, and dynamic price calculation.
 
 **Independent Test**: Navigate to `/c/:catalogSlug` on a mobile viewport, verify sub-second load, filter by category, tap a product, toggle sizes and extras, and confirm price updates in real-time.
 

@@ -93,7 +93,7 @@ function DashboardOverviewPage() {
           </Button>
           <a href={catalogPublicUrl} target="_blank" rel="noreferrer">
             <Button variant="primary" size="sm" className="gap-1.5">
-              <ExternalLink size={14} /> عرض الكتالوج
+              <ExternalLink size={14} /> معاينة المنيو
             </Button>
           </a>
         </div>

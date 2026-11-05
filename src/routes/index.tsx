@@ -16,9 +16,12 @@ function HomePage() {
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[var(--brand-primary)] to-[var(--brand-accent)] flex items-center justify-center text-white font-black text-lg shadow-sm">
-              د
+              M
             </div>
-            <span className="font-extrabold text-lg text-[var(--brand-primary)]">دليل السويس</span>
+            <div className="flex flex-col">
+              <span className="font-extrabold text-base sm:text-lg text-[var(--brand-primary)] leading-tight">ديجيتال منيو</span>
+              <span className="text-[10px] text-[var(--text-muted)] font-semibold -mt-0.5">Digital Menu | دليل السويس</span>
+            </div>
           </div>
 
           {user ? (
@@ -49,12 +52,12 @@ function HomePage() {
         </div>
 
         <h1 className="text-3xl sm:text-5xl font-black text-[var(--brand-primary)] leading-tight tracking-tight">
-          كتالوجك الرقمي وقائمة أسعارك <br />
+          المنيو الإلكتروني وقائمة أسعارك <br />
           <span className="text-[var(--brand-accent)]">برمز QR واحد دائم</span> لا يتغير
         </h1>
 
         <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
-          انقل متجرك أو مطعمك إلى العصر الرقمي في دقائق معدودة. أنشئ قائمة منتجاتك، واطبع رمز الاستجابة السريعة (QR)، واستقبل طلبات العملاء فوراً على واتساب بدون أي عمولات.
+          انقل مطعمك أو متجرك إلى العصر الرقمي في دقائق معدودة. أنشئ منيو منتجاتك وقائمتك، واطبع رمز الاستجابة السريعة (QR)، واستقبل طلبات العملاء فوراً على واتساب بدون أي عمولات.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
@@ -143,7 +146,7 @@ function HomePage() {
 
       {/* Footer */}
       <footer className="px-4 py-8 max-w-5xl mx-auto text-center text-xs text-[var(--text-muted)] space-y-2">
-        <p>© {new Date().getFullYear()} دليل السويس - جميع الحقوق محفوظة.</p>
+        <p>© {new Date().getFullYear()} ديجيتال منيو (Digital Menu) - دليل السويس - جميع الحقوق محفوظة.</p>
         <p>منصة سحابية فائقة السرعة مبنية على أحدث تقنيات Cloudflare Workers و React 19.</p>
       </footer>
     </div>

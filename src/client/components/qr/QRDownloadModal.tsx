@@ -14,7 +14,7 @@ export function QRDownloadModal({ shortCode, storeName, redirectUrl, onClose }: 
   const fallbackUrl =
     typeof window !== 'undefined'
       ? `${window.location.origin}/q/${shortCode || 'code'}`
-      : `https://catalog.daleel-al-suez.com/q/${shortCode || 'code'}`;
+      : `https://digitalmenu.daleel-al-suez.com/q/${shortCode || 'code'}`;
 
   const resolvedUrl = redirectUrl && redirectUrl.trim() ? redirectUrl.trim() : fallbackUrl;
 

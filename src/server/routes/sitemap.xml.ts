@@ -2,7 +2,7 @@ import { supabase } from '../db/supabase';
 
 export async function handleSitemapXml(): Promise<Response> {
   const primaryDomain =
-    process.env.VITE_PUBLIC_APP_URL || 'https://catalog.daleel-al-suez.com';
+    process.env.VITE_PUBLIC_APP_URL || 'https://digitalmenu.daleel-al-suez.com';
 
   const { data: catalogs } = await supabase
     .from('catalogs')

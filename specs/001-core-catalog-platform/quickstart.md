@@ -19,7 +19,7 @@ VITE_SUPABASE_URL=https://<your-project-id>.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOi...
 
 # Primary Domain Base (Do not include trailing slash)
-VITE_PUBLIC_APP_URL=https://<my-name>.daleel-al-suez.com
+VITE_PUBLIC_APP_URL=https://digitalmenu.daleel-al-suez.com
 
 # Analytics Fingerprint Secret (64-character random hex string)
 ANALYTICS_HMAC_SECRET=c8f59b207d1a...

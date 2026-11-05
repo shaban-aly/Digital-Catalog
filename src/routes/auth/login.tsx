@@ -85,9 +85,9 @@ function LoginPage() {
         <div className="text-center space-y-1">
           <Link to="/" className="inline-flex items-center gap-2 mb-1">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[var(--primary)] to-emerald-700 flex items-center justify-center text-white font-black text-sm shadow-xs">
-              د
+              M
             </div>
-            <span className="font-extrabold text-base text-[var(--primary)]">دليل السويس</span>
+            <span className="font-extrabold text-base text-[var(--primary)]">ديجيتال منيو</span>
           </Link>
           <h1 className="text-lg font-black text-[var(--text-primary)]">
             {isResetMode ? 'استعادة كلمة المرور' : 'تسجيل الدخول'}

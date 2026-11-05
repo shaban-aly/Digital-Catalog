@@ -43,13 +43,14 @@ Unlike complex e-commerce platforms (Shopify, Salla, Zid) that demand payment ga
   - Supabase Free: 500 MB database, 1 GB storage, 2 GB egress bandwidth.
   - Merchant Quotas: 1 business, 1 catalog, 100 master products, 15 categories, 3 images per product (<100KB WebP), 1 default branch.
   - Currency: Egyptian Pound (EGP / ج.م) as default standard.
-  - Single primary domain: `https://catalog.daleel-al-suez.com/`.
+  - Single primary domain: `https://digitalmenu.daleel-al-suez.com/`.
 
 ## Brand Commitments
 
-- **Domain**: `https://catalog.daleel-al-suez.com/`.
-- **Identity & Voice**: Clean, trustworthy, utilitarian, modern SaaS with regional Arabic authenticity.
-- **Growth Mechanic**: Discreet, elegant viral badge on free public catalogs: *"أنشئ كتالوجك مجاناً عبر دليل السويس"* / *"Powered by Daleel Al-Suez"*.
+- **Product Name**: Digital Menu (ديجيتال منيو)
+- **Domain**: `https://digitalmenu.daleel-al-suez.com/`.
+- **Identity & Voice**: Clean, trustworthy, utilitarian, modern SaaS with regional Arabic authenticity tailored for Suez/Egypt.
+- **Growth Mechanic**: Discreet, elegant viral badge on free public menus: *"أنشئ المنيو الإلكتروني مجاناً عبر ديجيتال منيو"* / *"Powered by Digital Menu - Daleel Al-Suez"*.
 
 ## Evidence on Hand
 

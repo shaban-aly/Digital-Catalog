@@ -142,14 +142,14 @@ function AdminProtectedLayout() {
           <div className="flex items-center gap-3">
             <Link to="/dashboard" className="flex items-center gap-2 select-none group">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[var(--brand-primary,#0F172A)] to-emerald-700 flex items-center justify-center text-white font-black text-lg shadow-sm">
-                د
+                M
               </div>
               <div className="flex flex-col">
                 <span className="font-extrabold text-sm text-[var(--text-primary)] group-hover:text-emerald-700 transition-colors">
-                  دليل السويس
+                  ديجيتال منيو
                 </span>
                 <span className="text-[10px] text-[var(--text-muted)] font-medium">
-                  لوحة تحكم التاجر
+                  لوحة إدارة المنيو | دليل السويس
                 </span>
               </div>
             </Link>

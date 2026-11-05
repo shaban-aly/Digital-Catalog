@@ -6,7 +6,7 @@
 
 ## Summary
 
-Build the foundational Free-First MVP of the Digital Catalog & QR Platform targeted for Egypt and the Suez market (`daleel-al-suez.com`). The system enables local merchants to register, set up their business in Egyptian Pounds (EGP / ج.م), organize up to 15 categories, manage up to 100 master products with browser-compressed WebP images (<100KB), configure hierarchical pricing with variants and options, and generate a dynamic permanent QR code. End consumers access sub-second SSR public catalogs on mobile networks, navigate categories smoothly, and convert directly via an auto-populated WhatsApp message. The infrastructure runs entirely on Cloudflare Workers Free and Supabase Free at $0 initial cost under the primary domain `https://catalog.daleel-al-suez.com/`.
+Build the foundational Free-First MVP of the Digital Menu & QR Platform ("ديجيتال منيو") targeted for Egypt and the Suez market (`daleel-al-suez.com`). The system enables local merchants to register, set up their business in Egyptian Pounds (EGP / ج.م), organize up to 15 categories, manage up to 100 master products with browser-compressed WebP images (<100KB), configure hierarchical pricing with variants and options, and generate a dynamic permanent QR code. End consumers access sub-second SSR public catalogs on mobile networks, navigate categories smoothly, and convert directly via an auto-populated WhatsApp message. The infrastructure runs entirely on Cloudflare Workers Free and Supabase Free at $0 initial cost under the primary domain `https://digitalmenu.daleel-al-suez.com/`.
 
 ---
 
