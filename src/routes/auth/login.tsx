@@ -9,7 +9,7 @@ export const Route = createFileRoute('/auth/login')({
   component: LoginPage,
 });
 
-export function LoginPage() {
+function LoginPage() {
   const { signIn, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

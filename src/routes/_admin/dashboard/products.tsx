@@ -18,7 +18,7 @@ export const Route = createFileRoute('/_admin/dashboard/products')({
   component: DashboardProductsPage,
 });
 
-export function DashboardProductsPage() {
+function DashboardProductsPage() {
   const { user } = useAuth();
   const [business, setBusiness] = useState<Business | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);

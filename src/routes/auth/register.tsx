@@ -10,7 +10,7 @@ export const Route = createFileRoute('/auth/register')({
   component: RegisterPage,
 });
 
-export function RegisterPage() {
+function RegisterPage() {
   const { signUp, isLoading } = useAuth();
   const [storeName, setStoreName] = useState('');
   const [storeSlug, setStoreSlug] = useState('');

@@ -23,7 +23,20 @@ export class BusinessService {
       .replace(/[^\w\u0621-\u064A-]+/g, '-')
       .replace(/^-+|-+$/g, '');
 
-    // 1. Create Business Record
+    // 0. Try Atomic RPC procedure first
+    const { data: rpcData, error: rpcError } = await supabase.rpc('create_merchant_business', {
+      p_name: name,
+      p_slug: cleanSlug,
+      p_industry_type: industryType,
+      p_currency_code: currencyCode,
+      p_phone_number: phoneNumber || null,
+    });
+
+    if (!rpcError && rpcData) {
+      return rpcData as unknown as Business;
+    }
+
+    // 1. Direct Table Inserts Fallback
     const { data: business, error: businessError } = await supabase
       .from('businesses')
       .insert({

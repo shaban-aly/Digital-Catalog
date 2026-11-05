@@ -1,14 +1,28 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl =
-  import.meta.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
-const supabaseAnonKey =
-  import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key';
+  import.meta.env.VITE_PUBLIC_SUPABASE_URL ||
+  import.meta.env.VITE_SUPABASE_URL ||
+  process.env.VITE_PUBLIC_SUPABASE_URL ||
+  process.env.VITE_SUPABASE_URL ||
+  'https://placeholder.supabase.co';
 
-if (!import.meta.env.VITE_SUPABASE_URL && !process.env.VITE_SUPABASE_URL) {
+const supabaseAnonKey =
+  import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  process.env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.VITE_SUPABASE_ANON_KEY ||
+  'placeholder-anon-key';
+
+const hasCredentials = Boolean(
+  (import.meta.env.VITE_PUBLIC_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || process.env.VITE_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL) &&
+  (import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY)
+);
+
+if (!hasCredentials) {
   // Helpful development warning if credentials have not been configured yet
   console.warn(
-    '[SupabaseClient] Warning: VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY is not set. Ensure your .env file is populated.'
+    '[SupabaseClient] Warning: VITE_PUBLIC_SUPABASE_URL or VITE_PUBLIC_SUPABASE_ANON_KEY is not set. Ensure your .env file is populated.'
   );
 }
 

@@ -6,7 +6,7 @@ export const Route = createFileRoute('/')({
   component: HomePage,
 });
 
-export function HomePage() {
+function HomePage() {
   return (
     <div className="min-h-screen bg-[var(--bg-app)] text-[var(--text-primary)]">
       {/* Top Navbar */}

@@ -235,9 +235,35 @@ CREATE POLICY "Users view own business memberships"
   ON public.business_members FOR SELECT
   USING (user_id = auth.uid());
 
-CREATE POLICY "Merchant members manage business profile"
-  ON public.businesses FOR ALL
+CREATE POLICY "Users can insert own business membership"
+  ON public.business_members FOR INSERT
+  TO authenticated
+  WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY "Merchant members manage business members"
+  ON public.business_members FOR ALL
+  USING (business_id IN (SELECT public.get_auth_business_ids()));
+
+CREATE POLICY "Authenticated users can create businesses"
+  ON public.businesses FOR INSERT
+  TO authenticated
+  WITH CHECK (true);
+
+CREATE POLICY "Merchant members view business profile"
+  ON public.businesses FOR SELECT
   USING (id IN (SELECT public.get_auth_business_ids()));
+
+CREATE POLICY "Merchant members update business profile"
+  ON public.businesses FOR UPDATE
+  USING (id IN (SELECT public.get_auth_business_ids()));
+
+CREATE POLICY "Merchant members delete business profile"
+  ON public.businesses FOR DELETE
+  USING (id IN (SELECT public.get_auth_business_ids()));
+
+CREATE POLICY "Merchant members manage branches"
+  ON public.branches FOR ALL
+  USING (business_id IN (SELECT public.get_auth_business_ids()));
 
 CREATE POLICY "Merchant members manage categories"
   ON public.categories FOR ALL
@@ -329,4 +355,61 @@ CREATE POLICY "Public can view media of public products"
 CREATE POLICY "Public can resolve active QR codes"
   ON public.qr_codes FOR SELECT
   USING (is_active = true);
+
+-- ============================================================================
+-- ATOMIC MERCHANT INITIALIZATION RPC FUNCTION
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION public.create_merchant_business(
+  p_name TEXT,
+  p_slug TEXT,
+  p_industry_type TEXT DEFAULT 'restaurant',
+  p_currency_code TEXT DEFAULT 'SAR',
+  p_phone_number TEXT DEFAULT NULL
+)
+RETURNS JSONB
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_user_id UUID;
+  v_business RECORD;
+BEGIN
+  v_user_id := auth.uid();
+  IF v_user_id IS NULL THEN
+    RAISE EXCEPTION 'Not authenticated';
+  END IF;
+
+  -- 1. Create Business Profile
+  INSERT INTO public.businesses (
+    name, slug, industry_type, currency_code, phone_number, plan_code, max_products, max_categories
+  ) VALUES (
+    p_name, p_slug, p_industry_type, p_currency_code, p_phone_number, 'free', 100, 15
+  ) RETURNING * INTO v_business;
+
+  -- 2. Link User as Business Owner
+  INSERT INTO public.business_members (
+    business_id, user_id, role
+  ) VALUES (
+    v_business.id, v_user_id, 'owner'
+  );
+
+  -- 3. Create Default Branch
+  INSERT INTO public.branches (
+    business_id, name, is_default
+  ) VALUES (
+    v_business.id, 'الفرع الرئيسي', true
+  );
+
+  -- 4. Create Primary Catalog
+  INSERT INTO public.catalogs (
+    business_id, name, slug, is_published, theme_config
+  ) VALUES (
+    v_business.id, 'قائمة المتجر الرئيسية', p_slug, true, jsonb_build_object('preset', p_industry_type)
+  );
+
+  RETURN to_jsonb(v_business);
+END;
+$$;
 

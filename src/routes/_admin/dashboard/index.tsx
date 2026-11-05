@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_admin/dashboard/')({
   component: DashboardOverviewPage,
 });
 
-export function DashboardOverviewPage() {
+function DashboardOverviewPage() {
   const { user, isLoading: isAuthLoading } = useAuth();
   const [business, setBusiness] = useState<Business | null>(null);
   const [metrics, setMetrics] = useState<AnalyticsSummary | null>(null);
