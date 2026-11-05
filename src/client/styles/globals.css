@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Surface & Background */
+    --bg-app: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --bg-surface-subtle: #F1F5F9;
+
+    /* Text & Typography */
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+
+    /* Borders & Dividers */
+    --border-subtle: #E2E8F0;
+    --border-focus: #2563EB;
+
+    /* Brand & Accent Tokens */
+    --primary: #0F172A;
+    --primary-foreground: #FFFFFF;
+
+    --whatsapp-green: #25D366;
+    --whatsapp-dark: #128C7E;
+
+    --accent-promo: #EF4444;
+    --badge-avail: #10B981;
+    --badge-out: #94A3B8;
+
+    /* Radius Tokens */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-full: 9999px;
+  }
+
+  html {
+    direction: rtl;
+    font-family: 'Cairo', 'Readex Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Custom Scrollbar for Horizontal Category Pills */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

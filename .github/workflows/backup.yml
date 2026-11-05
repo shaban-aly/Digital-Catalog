@@ -1,0 +1,34 @@
+name: Encrypted Daily Database Backup
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # Every night at 03:00 UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install PostgreSQL Tools & Age Encryption
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client age
+
+      - name: Dump and Encrypt Database
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          BACKUP_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
+        run: |
+          TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+          BACKUP_FILE="backup_${TIMESTAMP}.sql.gz"
+          ENCRYPTED_FILE="${BACKUP_FILE}.age"
+
+          echo "Dumping database..."
+          pg_dump -h ${{ secrets.SUPABASE_DB_HOST }} -U postgres -d postgres -F c -b -v | gzip > "$BACKUP_FILE"
+
+          echo "Encrypting backup with Age..."
+          echo "$BACKUP_KEY" | age -p -o "$ENCRYPTED_FILE" "$BACKUP_FILE"
+
+          echo "Secure encrypted archive ready: $ENCRYPTED_FILE"
+          # Upload to Cloudflare R2 bucket via AWS S3 CLI
+          # aws s3 cp "$ENCRYPTED_FILE" "s3://${{ secrets.R2_BUCKET_NAME }}/backups/$ENCRYPTED_FILE" --endpoint-url "${{ secrets.R2_ENDPOINT_URL }}"

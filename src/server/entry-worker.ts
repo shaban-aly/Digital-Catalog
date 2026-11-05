@@ -1,0 +1,31 @@
+import { createStartHandler, defaultStreamHandler } from '@tanstack/react-start/server';
+import { handleQrRedirect } from './routes/q.$shortCode';
+import { handleRobotsTxt } from './routes/robots.txt';
+import { handleSitemapXml } from './routes/sitemap.xml';
+
+const fetchHandler = createStartHandler(defaultStreamHandler);
+
+export default {
+  async fetch(request: Request, _env: Record<string, any>, ctx: any): Promise<Response> {
+    const url = new URL(request.url);
+
+    // 1. Ultra-fast QR 302 redirect route (<50ms, non-blocking analytics)
+    const qrMatch = url.pathname.match(/^\/q\/([a-zA-Z0-9_-]+)$/);
+    if (qrMatch) {
+      return handleQrRedirect(request, qrMatch[1], ctx);
+    }
+
+    // 2. SEO Robots.txt
+    if (url.pathname === '/robots.txt') {
+      return handleRobotsTxt();
+    }
+
+    // 3. Dynamic Sitemap.xml
+    if (url.pathname === '/sitemap.xml') {
+      return handleSitemapXml();
+    }
+
+    // 4. TanStack Start SSR & App
+    return fetchHandler(request);
+  },
+};
