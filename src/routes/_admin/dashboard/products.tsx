@@ -181,11 +181,23 @@ function DashboardProductsPage() {
             {filteredProducts.map((p) => {
               const category = categories.find((c) => c.id === p.category_id);
               const isAvailable = p.status === 'active';
+              const coverImg =
+                (p as any).media?.find((m: any) => m.is_cover)?.public_url ||
+                (p as any).media?.[0]?.public_url;
+
               return (
                 <div key={p.id} className="p-3.5 flex items-center justify-between gap-3 hover:bg-[var(--bg-app)]/50 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-[var(--radius-md)] bg-[var(--bg-surface-subtle)] overflow-hidden shrink-0 border border-[var(--border-subtle)] flex items-center justify-center">
-                      <span className="text-[10px] text-[var(--text-muted)]">صورة</span>
+                      {coverImg ? (
+                        <img
+                          src={coverImg}
+                          alt={p.name.ar}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-[10px] text-[var(--text-muted)]">لا صورة</span>
+                      )}
                     </div>
 
                     <div>

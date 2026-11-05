@@ -83,16 +83,24 @@ export class SupabaseStorageProvider implements IStorageProvider {
   }
 
   /**
-   * Generates a CDN-cached public URL fronted by Cloudflare
-   * Protects Supabase Free Tier 2GB Egress by caching images at Cloudflare Edge for 30 days.
+   * Generates a public URL for the storage asset.
+   * In development or unless a valid production custom domain is configured,
+   * returns the direct Supabase Storage public URL to guarantee 100% reliable image loading.
    */
   getPublicUrl(path: string): string {
     const { data } = supabase.storage.from(this.bucket).getPublicUrl(path);
 
-    // If a custom domain base is configured, rewrite to proxy through Cloudflare CDN
-    if (this.customDomainBase && !data.publicUrl.startsWith(this.customDomainBase)) {
+    // Only rewrite if customDomainBase is set, is NOT localhost, and is NOT a template placeholder
+    if (
+      this.customDomainBase &&
+      !this.customDomainBase.includes('localhost') &&
+      !this.customDomainBase.includes('127.0.0.1') &&
+      !this.customDomainBase.includes('<my-name>') &&
+      !data.publicUrl.startsWith(this.customDomainBase)
+    ) {
+      const cleanBase = this.customDomainBase.replace(/\/+$/, '');
       const urlObj = new URL(data.publicUrl);
-      return `${this.customDomainBase}${urlObj.pathname}`;
+      return `${cleanBase}${urlObj.pathname}`;
     }
 
     return data.publicUrl;

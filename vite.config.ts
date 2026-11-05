@@ -6,6 +6,14 @@ import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
 export default defineConfig({
+  server: {
+    proxy: {
+      '/storage': {
+        target: 'https://opgiyqxsthrxzrbgupso.supabase.co',
+        changeOrigin: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),

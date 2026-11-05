@@ -25,7 +25,22 @@ export default {
       return handleSitemapXml();
     }
 
-    // 4. TanStack Start SSR & App
+    // 4. Image CDN Edge Caching proxy for Supabase Storage (protects Free Tier egress)
+    if (url.pathname.startsWith('/storage/v1/object/public/')) {
+      const supabaseUrl =
+        _env?.VITE_PUBLIC_SUPABASE_URL ||
+        'https://opgiyqxsthrxzrbgupso.supabase.co';
+      const targetUrl = `${supabaseUrl}${url.pathname}${url.search}`;
+      const response = await fetch(targetUrl);
+      const headers = new Headers(response.headers);
+      headers.set('Cache-Control', 'public, max-age=2592000, immutable');
+      return new Response(response.body, {
+        status: response.status,
+        headers,
+      });
+    }
+
+    // 5. TanStack Start SSR & App
     return fetchHandler(request);
   },
 };
