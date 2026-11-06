@@ -15,10 +15,10 @@ export class PublicCatalogService {
   async getCatalogByBusinessSlug(businessSlug: string): Promise<TenantCatalogResult> {
     const cleanSlug = businessSlug.toLowerCase().trim();
 
-    // 1. Fetch business status and details
+    // 1. Fetch business details
     const { data: business, error: bError } = await supabase
       .from('businesses')
-      .select('id, name, slug, currency_code, phone_number, logo_url, cover_url, industry_type, status')
+      .select('id, name, slug, currency_code, phone_number, logo_url, cover_url, industry_type')
       .ilike('slug', cleanSlug)
       .maybeSingle();
 
@@ -26,7 +26,7 @@ export class PublicCatalogService {
       return { type: 'not_found' };
     }
 
-    if (business.status === 'suspended' || business.status === 'archived') {
+    if ((business as any).status === 'suspended' || (business as any).status === 'archived') {
       return { type: 'suspended' };
     }
 
@@ -70,8 +70,7 @@ export class PublicCatalogService {
           phone_number,
           logo_url,
           cover_url,
-          industry_type,
-          status
+          industry_type
         )
       `)
       .eq('slug', catalogSlug)
