@@ -1,8 +1,8 @@
 <!--
 Sync Impact Report
-Version change: uninitialized → 1.0.0
-Modified principles: N/A (Initial Ratification)
-Added sections: Core Principles (I through VII), Technical Stack & Infrastructure Constraints, Development Workflow & Quality Gates, Governance
+Version change: 1.0.0 → 1.1.0
+Modified principles: Minor expansion of Development Workflow & Quality Gates (Mandatory Database Impact section)
+Added sections: Principle VIII (Database Architecture & Migration Governance), 13 Logical Domain Map, Supabase CLI Migration Protocol
 Removed sections: None
 Follow-up TODOs: None
 -->
@@ -36,6 +36,16 @@ QR code redirects (`/q/:shortCode`) MUST execute an immediate HTTP 302 redirect 
 ### VII. Impeccable Design & Arabic-First (RTL) Accessibility
 The platform's user interface must embody the highest standards of product design (Impeccable Design). Arabic RTL is the primary, first-class locale, with seamless English LTR symmetry. Design tokens (colors, typography, spacing, elevations) must be centrally defined and systematically applied using Tailwind CSS and accessible component primitives (shadcn/ui). Both the Merchant Dashboard and the Public Catalog must maintain clear visual hierarchy, thoughtful micro-interactions, responsive mobile ergonomics, and meaningful loading/empty states.
 
+### VIII. Database Architecture & Migration Governance (NON-NEGOTIABLE)
+The database operates under a strict single-schema (`public`), multi-tenant shared PostgreSQL architecture. Structural evolution is governed by immutable, incremental, timestamped migrations managed via the Supabase CLI (`supabase/migrations/<YYYYMMDDHHMMSS>_<domain>_<action>.sql`). 
+- Monolithic SQL files and unversioned dashboard edits are strictly prohibited.
+- Data models must be classified into the 13 defined Logical Domains (`core`, `tenant`, `branch`, `category`, `product`, `media`, `catalog`, `publish`, `analytics`, `limits`, `commerce`, `notify`, `import`).
+- Migrations must be cohesive: related changes are grouped, large features are decomposed into ordered migrations, and one-liner trivial statements are avoided.
+- Once applied, migrations are permanently immutable.
+- Development seeds (`supabase/seed.sql`) must remain strictly isolated from schema DDL migrations.
+- Every table MUST enforce Row Level Security (RLS) with explicit tenant scoping (`business_id`).
+- TypeScript database types MUST be regenerated (`supabase gen types typescript`) upon every schema modification.
+
 ## Technical Stack & Infrastructure Constraints
 
 - **Full-Stack Framework**: React 19, TypeScript (strict mode), TanStack Start.
@@ -56,10 +66,10 @@ The platform's user interface must embody the highest standards of product desig
 
 ## Development Workflow & Quality Gates
 
-1. **Phase 1 – Specification**: Features are defined with clear actors, user stories, business rules, edge cases, and verifiable acceptance criteria.
-2. **Phase 2 – Architecture Planning**: Detailed technical designs, schema contracts, Zod validation schemas, API specifications, and RLS policies are produced before coding.
-3. **Phase 3 – Task Breakdown**: Implementation is decomposed into atomic, dependency-ordered tasks with clear verification steps.
-4. **Phase 4 – Implementation**: Tasks are executed sequentially against the approved specification. Type checking (`tsc --noEmit`), linting (`eslint`), and responsive UI verification must pass for every task.
+1. **Phase 1 – Specification**: Features are defined with clear actors, user stories, business rules, edge cases, and verifiable acceptance criteria. Every feature specification MUST include a mandatory **Database Impact** section detailing affected logical domains, tables, keys, constraints, and RLS policies.
+2. **Phase 2 – Architecture Planning**: Detailed technical designs, schema contracts, Zod validation schemas, API specifications, and RLS policies are produced before coding. Migration files are planned and decomposed by logical domain using timestamped Supabase CLI naming.
+3. **Phase 3 – Task Breakdown**: Implementation is decomposed into atomic, dependency-ordered tasks with clear verification steps. Database migrations, seed data, and TypeScript type generation steps are explicitly sequenced.
+4. **Phase 4 – Implementation**: Tasks are executed sequentially against the approved specification. Type checking (`tsc --noEmit`), linting (`eslint`), database RLS tests, and responsive UI verification must pass for every task.
 5. **Phase 5 – Validation**: Features are reviewed against the constitutional principles, edge quotas, and acceptance criteria before being marked complete.
 
 ## Governance
@@ -71,4 +81,4 @@ This Constitution is the supreme authority governing the technical and product e
   - **MINOR**: Addition of new principles, sections, or materially expanded governance rules.
   - **PATCH**: Clarifications, formatting corrections, and non-semantic refinements.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 1.1.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-06

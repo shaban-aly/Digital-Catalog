@@ -36,8 +36,12 @@ Digital-Catalog.md
 # Supabase CLI temp files
 supabase/.temp/
 
+# Agent & IDE internals (not tracked)
 .agent
 .agents
-.specify
-.docs
 .tanstack
+
+# Spec Kit: ignore internal agent state, but track spec files, plans, and constitution
+.specify/agent/
+.specify/cache/
+.specify/tmp/
