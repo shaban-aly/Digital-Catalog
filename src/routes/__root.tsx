@@ -1,6 +1,6 @@
 import { createRootRoute, Outlet, HeadContent, Scripts } from '@tanstack/react-router';
 import { AuthProvider } from '@/client/hooks/use-auth';
-import '@/client/styles/globals.css';
+import appCss from '@/client/styles/globals.css?url';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -21,6 +21,10 @@ export const Route = createRootRoute({
       },
     ],
     links: [
+      {
+        rel: 'stylesheet',
+        href: appCss,
+      },
       {
         rel: 'preconnect',
         href: 'https://fonts.googleapis.com',

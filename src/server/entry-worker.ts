@@ -40,7 +40,15 @@ export default {
       });
     }
 
-    // 5. TanStack Start SSR & App
+    // 5. Static Assets fallback (guarantees CSS/JS are served directly with correct MIME)
+    if ((url.pathname.startsWith('/assets/') || url.pathname.endsWith('.svg') || url.pathname.endsWith('.ico')) && _env?.ASSETS) {
+      const asset = await _env.ASSETS.fetch(request);
+      if (asset.status < 400) {
+        return asset;
+      }
+    }
+
+    // 6. TanStack Start SSR & App
     return fetchHandler(request);
   },
 };

@@ -5,14 +5,14 @@ const supabaseUrl =
   import.meta.env.VITE_SUPABASE_URL ||
   process.env.VITE_PUBLIC_SUPABASE_URL ||
   process.env.VITE_SUPABASE_URL ||
-  'https://placeholder.supabase.co';
+  'https://opgiyqxsthrxzrbgupso.supabase.co';
 
 const supabaseAnonKey =
   import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
   import.meta.env.VITE_SUPABASE_ANON_KEY ||
   process.env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
   process.env.VITE_SUPABASE_ANON_KEY ||
-  'placeholder-anon-key';
+  'sb_publishable_OuQQLYO9FpiIiWrMyyXeTg_nnuzQ0xL';
 
 const hasCredentials = Boolean(
   (import.meta.env.VITE_PUBLIC_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || process.env.VITE_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL) &&
