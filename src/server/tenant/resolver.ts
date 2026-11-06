@@ -30,15 +30,18 @@ export interface TenantResolutionResult {
  * 7. Otherwise → isTenantSubdomain with tenantSlug set.
  */
 export class TenantResolver {
-  private readonly baseDomain: string;
   private readonly platformHost: string;
+  private readonly tenantBaseDomain: string;
+  private readonly apexBaseDomain: string;
 
   constructor(
-    baseDomain = 'daleel-al-suez.com',
+    tenantBaseDomain = 'digitalmenu.daleel-al-suez.com',
     platformHost = 'digitalmenu.daleel-al-suez.com',
+    apexBaseDomain = 'daleel-al-suez.com',
   ) {
-    this.baseDomain = baseDomain.toLowerCase();
+    this.tenantBaseDomain = tenantBaseDomain.toLowerCase();
     this.platformHost = platformHost.toLowerCase();
+    this.apexBaseDomain = apexBaseDomain.toLowerCase();
   }
 
   resolve(url: URL): TenantResolutionResult {
@@ -63,9 +66,26 @@ export class TenantResolver {
       };
     }
 
-    // Must end with .baseDomain to be a recognized subdomain
-    const domainSuffix = `.${this.baseDomain}`;
-    if (!host.endsWith(domainSuffix)) {
+    let subpart: string | null = null;
+
+    // Pattern 1 (Target Platform Wildcard): {slug}.digitalmenu.daleel-al-suez.com
+    const platformSuffix = `.${this.tenantBaseDomain}`;
+    if (host.endsWith(platformSuffix)) {
+      subpart = host.slice(0, -(platformSuffix.length));
+    }
+    // Pattern 2 (Optional direct apex wildcard if ever routed): {slug}.daleel-al-suez.com
+    else {
+      const apexSuffix = `.${this.apexBaseDomain}`;
+      if (host.endsWith(apexSuffix)) {
+        const potential = host.slice(0, -(apexSuffix.length));
+        if (!potential.includes('.')) {
+          subpart = potential;
+        }
+      }
+    }
+
+    // If not matching any valid tenant domain suffix
+    if (!subpart) {
       return {
         isTenantSubdomain: false,
         tenantSlug: null,
@@ -75,10 +95,7 @@ export class TenantResolver {
       };
     }
 
-    // Extract the subdomain label
-    const subpart = host.slice(0, -(domainSuffix.length));
-
-    // Reject multi-level subdomains (e.g. a.b.daleel-al-suez.com)
+    // Reject multi-level subdomains (e.g. a.b.digitalmenu.daleel-al-suez.com)
     if (subpart.includes('.')) {
       return {
         isTenantSubdomain: false,

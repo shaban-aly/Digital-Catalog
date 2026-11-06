@@ -99,7 +99,7 @@ export const tenantErrorPages = {
       <h1>عفواً، المتجر غير موجود</h1>
       <p>
         لم نتمكن من العثور على أي قائمة أسعار أو متجر مسجل بالرابط:
-        <br><strong dir="ltr" style="color: #047857; font-size: 1.05rem;">${tenantSlug}.daleel-al-suez.com</strong>
+        <br><strong dir="ltr" style="color: #047857; font-size: 1.05rem;">${tenantSlug}.digitalmenu.daleel-al-suez.com</strong>
       </p>
       <a href="https://digitalmenu.daleel-al-suez.com/auth/register" class="btn">
         سجل هذا النطاق وأنشئ متجرك مجاناً
@@ -184,3 +184,4 @@ export const tenantErrorPages = {
     });
   },
 };
+

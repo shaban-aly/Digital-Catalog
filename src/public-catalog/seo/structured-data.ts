@@ -10,7 +10,7 @@ export function getCanonicalCatalogUrl(businessSlug: string, requestHost?: strin
   if (requestHost && requestHost.toLowerCase().startsWith(`${cleanSlug}.`)) {
     return `https://${requestHost.toLowerCase()}/`;
   }
-  return `https://${cleanSlug}.daleel-al-suez.com/`;
+  return `https://${cleanSlug}.digitalmenu.daleel-al-suez.com/`;
 }
 
 /**

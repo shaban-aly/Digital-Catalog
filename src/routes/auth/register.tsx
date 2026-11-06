@@ -216,7 +216,7 @@ function RegisterPage() {
             />
             <div className="flex items-center justify-between text-[11px] px-1">
               <span className="text-[var(--text-muted)] font-mono" dir="ltr">
-                {storeSlug ? `${storeSlug.toLowerCase()}.daleel-al-suez.com` : 'your-store.daleel-al-suez.com'}
+                {storeSlug ? `${storeSlug.toLowerCase()}.digitalmenu.daleel-al-suez.com` : 'your-store.digitalmenu.daleel-al-suez.com'}
               </span>
               {slugStatus === 'checking' && (
                 <span className="flex items-center gap-1 text-[var(--text-muted)]">

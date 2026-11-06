@@ -76,7 +76,7 @@ function DashboardOverviewPage() {
   }
 
   const catalogPublicUrl = `/c/${business.slug}`;
-  const subdomainUrl = `https://${business.slug}.daleel-al-suez.com/`;
+  const subdomainUrl = `https://${business.slug}.digitalmenu.daleel-al-suez.com/`;
 
   const copySubdomain = () => {
     navigator.clipboard.writeText(subdomainUrl);
