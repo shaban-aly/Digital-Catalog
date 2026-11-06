@@ -6,7 +6,7 @@ import { CategoryPills } from '@/public-catalog/components/CategoryPills';
 import { ProductCard } from '@/public-catalog/components/ProductCard';
 import { ItemDetailDrawer } from '@/public-catalog/components/ItemDetailDrawer';
 import { WhatsAppStickyBar } from '@/public-catalog/components/WhatsAppStickyBar';
-import { buildCatalogMeta, buildCatalogJsonLd } from '@/public-catalog/seo/structured-data';
+import { buildCatalogMeta, buildCatalogJsonLd, getCanonicalCatalogUrl } from '@/public-catalog/seo/structured-data';
 import type { PublicProduct } from '@/shared/schemas';
 
 export const Route = createFileRoute('/_public/c/$catalogSlug')({
@@ -19,9 +19,16 @@ export const Route = createFileRoute('/_public/c/$catalogSlug')({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) return {};
-    const canonicalUrl = `https://digitalmenu.daleel-al-suez.com/c/${params.catalogSlug}`;
+    const businessSlug = loaderData.business?.slug || params.catalogSlug;
+    const canonicalUrl = getCanonicalCatalogUrl(businessSlug);
     return {
       meta: buildCatalogMeta(loaderData, canonicalUrl),
+      links: [
+        {
+          rel: 'canonical',
+          href: canonicalUrl,
+        },
+      ],
       scripts: [
         {
           type: 'application/ld+json',

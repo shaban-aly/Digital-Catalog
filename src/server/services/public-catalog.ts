@@ -1,7 +1,55 @@
 import { supabase } from '../db/supabase';
 import type { PublicCatalogPayload } from '../../shared/schemas';
 
+export type TenantCatalogResult =
+  | { type: 'success'; data: PublicCatalogPayload }
+  | { type: 'not_found' }
+  | { type: 'unpublished' }
+  | { type: 'suspended' };
+
 export class PublicCatalogService {
+  /**
+   * Fetches the complete public catalog payload by business slug (used for tenant subdomains)
+   * with full lifecycle state checks (suspended, unpublished, not found).
+   */
+  async getCatalogByBusinessSlug(businessSlug: string): Promise<TenantCatalogResult> {
+    const cleanSlug = businessSlug.toLowerCase().trim();
+
+    // 1. Fetch business status and details
+    const { data: business, error: bError } = await supabase
+      .from('businesses')
+      .select('id, name, slug, currency_code, phone_number, logo_url, cover_url, industry_type, status')
+      .ilike('slug', cleanSlug)
+      .maybeSingle();
+
+    if (bError || !business) {
+      return { type: 'not_found' };
+    }
+
+    if (business.status === 'suspended' || business.status === 'archived') {
+      return { type: 'suspended' };
+    }
+
+    // 2. Fetch primary/active catalog for this business
+    const { data: catalog, error: cError } = await supabase
+      .from('catalogs')
+      .select('id, slug, theme_config, is_published')
+      .eq('business_id', business.id)
+      .maybeSingle();
+
+    if (cError || !catalog) {
+      return { type: 'not_found' };
+    }
+
+    if (!catalog.is_published) {
+      return { type: 'unpublished' };
+    }
+
+    // 3. Build the full catalog payload
+    const payload = await this.buildPayload(business, catalog);
+    return { type: 'success', data: payload };
+  }
+
   /**
    * Fetches the complete public catalog payload in a single round-trip query
    */
@@ -22,7 +70,8 @@ export class PublicCatalogService {
           phone_number,
           logo_url,
           cover_url,
-          industry_type
+          industry_type,
+          status
         )
       `)
       .eq('slug', catalogSlug)
@@ -34,7 +83,14 @@ export class PublicCatalogService {
     }
 
     const business = catalog.business as any;
+    if (business.status && business.status !== 'active') {
+      return null;
+    }
 
+    return this.buildPayload(business, catalog);
+  }
+
+  private async buildPayload(business: any, catalog: any): Promise<PublicCatalogPayload> {
     // Fetch active categories for this business
     const { data: categories } = await supabase
       .from('categories')

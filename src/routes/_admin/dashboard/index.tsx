@@ -7,7 +7,7 @@ import { qrService } from '@/server/services/qr';
 import { QRDownloadModal } from '@/client/components/qr/QRDownloadModal';
 import { Card } from '@/client/components/ui/Card';
 import { Button } from '@/client/components/ui/Button';
-import { QrCode, Eye, MessageCircle, Package, ExternalLink, Loader2 } from 'lucide-react';
+import { QrCode, Eye, MessageCircle, Package, ExternalLink, Loader2, Copy, Check, Globe } from 'lucide-react';
 import type { Business } from '@/shared/types';
 
 export const Route = createFileRoute('/_admin/dashboard/')({
@@ -21,6 +21,7 @@ function DashboardOverviewPage() {
   const [qrModalOpen, setQrModalOpen] = useState(false);
   const [qrRedirectUrl, setQrRedirectUrl] = useState('');
   const [qrShortCode, setQrShortCode] = useState('');
+  const [copiedUrl, setCopiedUrl] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -75,9 +76,49 @@ function DashboardOverviewPage() {
   }
 
   const catalogPublicUrl = `/c/${business.slug}`;
+  const subdomainUrl = `https://${business.slug}.daleel-al-suez.com/`;
+
+  const copySubdomain = () => {
+    navigator.clipboard.writeText(subdomainUrl);
+    setCopiedUrl(true);
+    setTimeout(() => setCopiedUrl(false), 2000);
+  };
 
   return (
     <div className="p-4 sm:p-6 space-y-6 text-right max-w-5xl mx-auto">
+      {/* Dedicated Tenant Subdomain Banner */}
+      <div className="bg-gradient-to-r from-emerald-900 to-teal-800 text-white p-4 sm:p-5 rounded-[var(--radius-lg)] shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5 text-xs text-emerald-200 font-semibold">
+            <Globe size={14} />
+            <span>رابط النطاق الفرعي الخاص بمتجرك:</span>
+          </div>
+          <div className="font-mono text-sm sm:text-base font-bold text-white tracking-wide" dir="ltr">
+            {subdomainUrl}
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={copySubdomain}
+            className="gap-1.5 bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs"
+          >
+            {copiedUrl ? <Check size={14} className="text-emerald-300" /> : <Copy size={14} />}
+            {copiedUrl ? 'تم النسخ!' : 'نسخ الرابط'}
+          </Button>
+          <a href={subdomainUrl} target="_blank" rel="noreferrer">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white border-transparent text-xs"
+            >
+              <ExternalLink size={14} /> زيارة المتجر
+            </Button>
+          </a>
+        </div>
+      </div>
+
       {/* Top Welcome Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[var(--bg-surface)] p-5 rounded-[var(--radius-lg)] border border-[var(--border-subtle)] shadow-sm">
         <div>

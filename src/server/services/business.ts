@@ -11,6 +11,50 @@ export interface CreateBusinessInput {
 
 export class BusinessService {
   /**
+   * Checks whether a slug is available for a new merchant subdomain
+   */
+  async checkSlugAvailability(slug: string): Promise<{ available: boolean; reason?: string }> {
+    const cleanSlug = slug.toLowerCase().trim();
+
+    // 1. Client-side DNS RFC 1123 format check
+    if (cleanSlug.length < 3) {
+      return { available: false, reason: 'الرابط قصير جداً (3 أحرف على الأقل)' };
+    }
+    if (cleanSlug.length > 63) {
+      return { available: false, reason: 'الرابط طويل جداً (63 حرف كحد أقصى)' };
+    }
+    if (!/^[a-z0-9]([a-z0-9-]{1,61}[a-z0-9])?$/.test(cleanSlug) || cleanSlug.includes('--')) {
+      return { available: false, reason: 'الرابط يجب أن يحتوي على أحرف إنجليزية وأرقام وشرطة واحدة فقط، وبدون شرطات في البداية أو النهاية' };
+    }
+
+    // 2. Query DB RPC or check tables directly
+    try {
+      const { data: isAvailable, error } = await supabase.rpc('is_slug_available', { p_slug: cleanSlug });
+      if (!error && typeof isAvailable === 'boolean') {
+        return {
+          available: isAvailable,
+          reason: isAvailable ? undefined : 'هذا الرابط محجوز أو مستخدم بالفعل',
+        };
+      }
+    } catch {
+      // Fallback to table queries if RPC is not yet applied
+    }
+
+    // Fallback: check businesses table
+    const { data: existing } = await supabase
+      .from('businesses')
+      .select('id')
+      .ilike('slug', cleanSlug)
+      .maybeSingle();
+
+    if (existing) {
+      return { available: false, reason: 'هذا الرابط مسجل لمتجر آخر' };
+    }
+
+    return { available: true };
+  }
+
+  /**
    * Initializes a new business profile and its default branch for an authenticated merchant
    */
   async createBusiness(userId: string, input: CreateBusinessInput): Promise<Business> {

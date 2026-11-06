@@ -5,7 +5,7 @@ import { businessService } from '@/server/services/business';
 import { Button } from '@/client/components/ui/Button';
 import { Input } from '@/client/components/ui/Input';
 import { Card } from '@/client/components/ui/Card';
-import { Mail, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { Mail, CheckCircle2, ArrowLeft, Check, X, Loader2 } from 'lucide-react';
 
 interface RegisterSearch {
   redirect?: string;
@@ -25,6 +25,8 @@ function RegisterPage() {
 
   const [storeName, setStoreName] = useState('');
   const [storeSlug, setStoreSlug] = useState('');
+  const [slugStatus, setSlugStatus] = useState<'idle' | 'checking' | 'available' | 'unavailable'>('idle');
+  const [slugMessage, setSlugMessage] = useState<string>('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -32,6 +34,54 @@ function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEmailConfirmationSent, setIsEmailConfirmationSent] = useState(false);
+
+  // Debounced real-time slug validation
+  useEffect(() => {
+    const slug = storeSlug.trim().toLowerCase();
+    if (!slug) {
+      setSlugStatus('idle');
+      setSlugMessage('');
+      return;
+    }
+
+    if (slug.length < 3) {
+      setSlugStatus('unavailable');
+      setSlugMessage('الرابط قصير جداً (3 أحرف على الأقل)');
+      return;
+    }
+
+    setSlugStatus('checking');
+    const timer = setTimeout(async () => {
+      try {
+        const res = await businessService.checkSlugAvailability(slug);
+        if (res.available) {
+          setSlugStatus('available');
+          setSlugMessage('الرابط متاح للحجز!');
+        } else {
+          setSlugStatus('unavailable');
+          setSlugMessage(res.reason || 'الرابط غير متاح');
+        }
+      } catch {
+        setSlugStatus('idle');
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [storeSlug]);
+
+  // Auto-generate slug suggestion from English business name if slug is empty
+  const handleNameChange = (val: string) => {
+    setStoreName(val);
+    if (!storeSlug) {
+      const suggested = val
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      if (suggested.length >= 3) {
+        setStoreSlug(suggested);
+      }
+    }
+  };
 
   // If already logged in, redirect to dashboard
   useEffect(() => {
@@ -151,18 +201,43 @@ function RegisterPage() {
             label="اسم النشاط التجاري / المتجر *"
             placeholder="مثال: مطعم الفانوس، بوتيك ستايل"
             value={storeName}
-            onChange={(e) => setStoreName(e.target.value)}
+            onChange={(e) => handleNameChange(e.target.value)}
             required
           />
 
-          <Input
-            label="الرابط المختصر المطلوب (Slug) *"
-            placeholder="alfanoos"
-            value={storeSlug}
-            onChange={(e) => setStoreSlug(e.target.value)}
-            dir="ltr"
-            required
-          />
+          <div className="space-y-1">
+            <Input
+              label="الرابط الفرعي المطلوب لنطاق متجرك (Subdomain) *"
+              placeholder="alfanoos"
+              value={storeSlug}
+              onChange={(e) => setStoreSlug(e.target.value)}
+              dir="ltr"
+              required
+            />
+            <div className="flex items-center justify-between text-[11px] px-1">
+              <span className="text-[var(--text-muted)] font-mono" dir="ltr">
+                {storeSlug ? `${storeSlug.toLowerCase()}.daleel-al-suez.com` : 'your-store.daleel-al-suez.com'}
+              </span>
+              {slugStatus === 'checking' && (
+                <span className="flex items-center gap-1 text-[var(--text-muted)]">
+                  <Loader2 size={12} className="animate-spin" />
+                  جاري التحقق...
+                </span>
+              )}
+              {slugStatus === 'available' && (
+                <span className="flex items-center gap-1 text-emerald-600 font-semibold">
+                  <Check size={12} />
+                  {slugMessage}
+                </span>
+              )}
+              {slugStatus === 'unavailable' && (
+                <span className="flex items-center gap-1 text-rose-600 font-semibold">
+                  <X size={12} />
+                  {slugMessage}
+                </span>
+              )}
+            </div>
+          </div>
 
           <div className="flex flex-col gap-1.5 text-right">
             <label className="text-xs font-semibold text-[var(--text-secondary)]">نوع النشاط *</label>

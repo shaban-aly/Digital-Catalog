@@ -1,6 +1,19 @@
 import type { PublicCatalogPayload } from '../../shared/schemas';
 
 /**
+ * Resolves the primary canonical URL for a merchant's catalog.
+ * Prefers the dedicated merchant subdomain (e.g., https://ahmed-cafe.daleel-al-suez.com/)
+ * to maximize SEO value and avoid duplicate content indexing.
+ */
+export function getCanonicalCatalogUrl(businessSlug: string, requestHost?: string): string {
+  const cleanSlug = businessSlug.toLowerCase().trim();
+  if (requestHost && requestHost.toLowerCase().startsWith(`${cleanSlug}.`)) {
+    return `https://${requestHost.toLowerCase()}/`;
+  }
+  return `https://${cleanSlug}.daleel-al-suez.com/`;
+}
+
+/**
  * Builds Schema.org JSON-LD structured data for a public catalog
  */
 export function buildCatalogJsonLd(catalogPayload: PublicCatalogPayload, currentUrl: string) {
