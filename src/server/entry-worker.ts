@@ -40,12 +40,15 @@ export default {
       // Root path '/' on a merchant subdomain internally rewrites to the merchant's catalog '/c/:slug'
       if (url.pathname === '/' || url.pathname === '') {
         const rewrittenUrl = new URL(`/c/${slug}${url.search}`, request.url);
-        const rewrittenRequest = new Request(rewrittenUrl.toString(), {
+        const reqInit: RequestInit = {
           method: request.method,
           headers: request.headers,
-          body: request.body,
           redirect: request.redirect,
-        });
+        };
+        if (request.method !== 'GET' && request.method !== 'HEAD' && request.body) {
+          reqInit.body = request.body;
+        }
+        const rewrittenRequest = new Request(rewrittenUrl.toString(), reqInit);
         return fetchHandler(rewrittenRequest);
       }
     }

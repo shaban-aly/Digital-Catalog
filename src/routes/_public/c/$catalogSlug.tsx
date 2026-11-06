@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, notFound } from '@tanstack/react-router';
 import { publicCatalogService } from '@/server/services/public-catalog';
 import { CatalogHeader } from '@/public-catalog/components/CatalogHeader';
 import { CategoryPills } from '@/public-catalog/components/CategoryPills';
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_public/c/$catalogSlug')({
   loader: async ({ params }) => {
     const catalogData = await publicCatalogService.getCatalogBySlug(params.catalogSlug);
     if (!catalogData) {
-      throw new Response('الكتالوج غير موجود أو تم إيقاف نشره', { status: 404 });
+      throw notFound();
     }
     return catalogData;
   },
