@@ -133,7 +133,7 @@ export const tenantErrorPages = {
       status: 403,
       headers: {
         'Content-Type': 'text/html; charset=UTF-8',
-        'Cache-Control': 'public, max-age=60',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
       },
     });
   },

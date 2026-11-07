@@ -1,22 +1,20 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl =
-  import.meta.env.VITE_PUBLIC_SUPABASE_URL ||
-  import.meta.env.VITE_SUPABASE_URL ||
-  process.env.VITE_PUBLIC_SUPABASE_URL ||
-  process.env.VITE_SUPABASE_URL ||
+  (typeof process !== 'undefined' ? (process.env?.VITE_PUBLIC_SUPABASE_URL || process.env?.VITE_SUPABASE_URL) : undefined) ||
+  (typeof import.meta.env !== 'undefined' ? (import.meta.env.VITE_PUBLIC_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL) : undefined) ||
   'https://opgiyqxsthrxzrbgupso.supabase.co';
 
 const supabaseAnonKey =
-  import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
-  import.meta.env.VITE_SUPABASE_ANON_KEY ||
-  process.env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
-  process.env.VITE_SUPABASE_ANON_KEY ||
+  (typeof process !== 'undefined' ? (process.env?.VITE_PUBLIC_SUPABASE_ANON_KEY || process.env?.VITE_SUPABASE_ANON_KEY) : undefined) ||
+  (typeof import.meta.env !== 'undefined' ? (import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY) : undefined) ||
   'sb_publishable_OuQQLYO9FpiIiWrMyyXeTg_nnuzQ0xL';
 
 const hasCredentials = Boolean(
-  (import.meta.env.VITE_PUBLIC_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || process.env.VITE_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL) &&
-  (import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY)
+  ((typeof process !== 'undefined' && (process.env?.VITE_PUBLIC_SUPABASE_URL || process.env?.VITE_SUPABASE_URL)) ||
+    (typeof import.meta.env !== 'undefined' && (import.meta.env.VITE_PUBLIC_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL))) &&
+  ((typeof process !== 'undefined' && (process.env?.VITE_PUBLIC_SUPABASE_ANON_KEY || process.env?.VITE_SUPABASE_ANON_KEY)) ||
+    (typeof import.meta.env !== 'undefined' && (import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY)))
 );
 
 if (!hasCredentials) {

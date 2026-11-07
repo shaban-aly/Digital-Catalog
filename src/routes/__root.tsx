@@ -1,5 +1,6 @@
 import { createRootRoute, Outlet, HeadContent, Scripts } from '@tanstack/react-router';
 import { AuthProvider } from '@/client/hooks/use-auth';
+import { DialogProvider } from '@/client/components/ui/Dialog';
 import appCss from '@/client/styles/globals.css?url';
 
 export const Route = createRootRoute({
@@ -56,7 +57,7 @@ function NotFoundComponent() {
       </p>
       <a
         href="/"
-        className="px-5 py-2.5 rounded-[var(--radius-md)] bg-[var(--brand-primary)] text-white text-sm font-bold shadow-sm hover:opacity-90 transition-opacity"
+        className="px-5 py-2.5 rounded-[var(--radius-md)] bg-[var(--primary)] text-[var(--primary-foreground)] text-sm font-bold shadow-sm hover:opacity-90 transition-opacity"
       >
         العودة للرئيسية
       </a>
@@ -72,7 +73,9 @@ function RootComponent() {
       </head>
       <body className="min-h-screen bg-[var(--bg-app)] text-[var(--text-primary)] antialiased">
         <AuthProvider>
-          <Outlet />
+          <DialogProvider>
+            <Outlet />
+          </DialogProvider>
         </AuthProvider>
         <Scripts />
       </body>

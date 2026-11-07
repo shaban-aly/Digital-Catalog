@@ -1,78 +1,141 @@
 import { useState } from 'react';
 import { Button } from '../ui/Button';
+import { useDialog } from '../ui/Dialog';
 import { productService } from '@/server/services/product';
-import { CheckCircle2, XCircle, Edit3, Loader2 } from 'lucide-react';
+import { CheckCircle2, XCircle, Edit3, Trash2, Loader2 } from 'lucide-react';
 
 interface ProductRowActionsProps {
   productId: string;
+  productName: string;
   isAvailable: boolean;
   onRefresh: () => void;
   onEdit?: (productId: string) => void;
+  onToggleAvailability?: (productId: string, newStatus: boolean) => Promise<void> | void;
 }
 
 export function ProductRowActions({
   productId,
+  productName,
   isAvailable,
   onRefresh,
   onEdit,
+  onToggleAvailability,
 }: ProductRowActionsProps) {
   const [isUpdating, setIsUpdating] = useState(false);
+  const dialog = useDialog();
 
-  const handleToggleAvailability = async () => {
+  const handleToggle = async () => {
     setIsUpdating(true);
     try {
-      await productService.setAvailability(productId, !isAvailable);
-      onRefresh();
-    } catch (err) {
+      if (onToggleAvailability) {
+        await onToggleAvailability(productId, !isAvailable);
+      } else {
+        await productService.setAvailability(productId, !isAvailable);
+        onRefresh();
+      }
+    } catch (err: any) {
       console.error('Failed to toggle product status:', err);
-      alert('حدث خطأ أثناء تعديل حالة التوفر.');
+      await dialog.alert({
+        title: 'تعذر تعديل الحالة',
+        message: err?.message || 'حدث خطأ غير متوقع أثناء تعديل حالة التوفر. يرجى المحاولة مرة أخرى.',
+        variant: 'danger',
+      });
     } finally {
       setIsUpdating(false);
     }
   };
 
+  const handleDelete = async () => {
+    const confirmed = await dialog.confirm({
+      title: 'حذف الصنف نهائياً',
+      message: `هل أنت متأكد من رغبتك في حذف "${productName}"؟ سيتم حذفه من قائمة طعام الزبائن فوراً ولا يمكن التراجع عن هذه الخطوة.`,
+      confirmText: 'نعم، حذف الصنف',
+      cancelText: 'إلغاء',
+      variant: 'danger',
+    });
+
+    if (confirmed) {
+      setIsUpdating(true);
+      try {
+        await productService.deleteProduct(productId);
+        onRefresh();
+      } catch (err: any) {
+        console.error('Failed to delete product:', err);
+        await dialog.alert({
+          title: 'تعذر حذف الصنف',
+          message: err?.message || 'حدث خطأ أثناء محاولة الحذف. يرجى المحاولة مرة أخرى.',
+          variant: 'danger',
+        });
+      } finally {
+        setIsUpdating(false);
+      }
+    }
+  };
+
   return (
     <div className="flex items-center gap-1.5 justify-end">
-      {/* Toggle Availability */}
+      {/* Toggle Availability Button */}
       <Button
         type="button"
         variant="ghost"
-        size="sm"
+        size="md"
         disabled={isUpdating}
-        onClick={handleToggleAvailability}
-        className={`h-8 px-2 text-xs gap-1 ${
-          isAvailable ? 'text-[var(--badge-avail)] hover:bg-emerald-50' : 'text-[var(--accent-promo)] hover:bg-rose-50'
+        onClick={handleToggle}
+        aria-label={
+          isAvailable
+            ? `تعطيل الصنف "${productName}" وجعله غير متوفر`
+            : `تفعيل الصنف "${productName}" وجعله متوفراً`
+        }
+        className={`min-h-[44px] px-3 text-xs gap-1.5 hover:bg-[var(--bg-surface-subtle)] font-bold transition-all ${
+          isAvailable
+            ? 'text-[var(--badge-avail)]'
+            : 'text-[var(--accent-promo)]'
         }`}
-        title={isAvailable ? 'تعطيل المنتج (غير متوفر)' : 'تفعيل المنتج (متوفر)'}
+        title={isAvailable ? 'تعطيل الصنف (غير متوفر)' : 'تفعيل الصنف (متوفر للطلب)'}
       >
         {isUpdating ? (
-          <Loader2 size={14} className="animate-spin" />
+          <Loader2 size={16} className="animate-spin" aria-hidden="true" />
         ) : isAvailable ? (
           <>
-            <CheckCircle2 size={14} />
-            <span className="hidden sm:inline">متوفر</span>
+            <CheckCircle2 size={16} aria-hidden="true" />
+            <span>متوفر</span>
           </>
         ) : (
           <>
-            <XCircle size={14} />
-            <span className="hidden sm:inline">غير متوفر</span>
+            <XCircle size={16} aria-hidden="true" />
+            <span>غير متوفر</span>
           </>
         )}
       </Button>
 
-      {/* Edit */}
+      {/* Edit Button */}
       {onEdit && (
         <Button
           type="button"
           variant="ghost"
-          size="sm"
+          size="md"
           onClick={() => onEdit(productId)}
-          className="h-8 w-8 p-0 text-[var(--text-secondary)]"
-          title="تعديل المنتج"
+          aria-label={`تعديل بيانات الصنف "${productName}"`}
+          className="min-h-[44px] min-w-[44px] p-2.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-subtle)]"
+          title="تعديل الصنف"
         >
-          <Edit3 size={14} />
+          <Edit3 size={16} aria-hidden="true" />
         </Button>
       )}
+
+      {/* Delete Button */}
+      <Button
+        type="button"
+        variant="ghost"
+        size="md"
+        disabled={isUpdating}
+        onClick={handleDelete}
+        aria-label={`حذف الصنف "${productName}"`}
+        className="min-h-[44px] min-w-[44px] p-2.5 text-[var(--text-muted)] hover:text-[var(--accent-promo)] hover:bg-[var(--bg-surface-subtle)]"
+        title="حذف الصنف"
+      >
+        <Trash2 size={16} aria-hidden="true" />
+      </Button>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router';
 import { supabase } from '@/server/db/supabase';
+import { mapSupabaseError } from '@/client/utils/auth-error-mapper';
 import { Button } from '@/client/components/ui/Button';
 import { Card } from '@/client/components/ui/Card';
 import { Loader2, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
@@ -74,8 +75,8 @@ function AuthCallbackPage() {
             setErrorMessage('لم يتم العثور على جلسة صالحة. قد يكون الرابط منتهي الصلاحية.');
           }
         }
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'فشل التحقق من صحة الرابط. يرجى المحاولة لاحقاً.';
+      } catch (err: unknown) {
+        const message = err instanceof Error ? mapSupabaseError(err) : 'فشل التحقق من صحة الرابط. قد يكون منتهي الصلاحية.';
         console.error('[Supabase Auth Callback] Verification failed:', err);
         if (isSubscribed) {
           setStatus('error');

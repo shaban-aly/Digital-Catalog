@@ -1,6 +1,7 @@
 export function handleRobotsTxt(): Response {
   const primaryDomain =
-    process.env.VITE_PUBLIC_APP_URL || 'https://digitalmenu.daleel-al-suez.com';
+    (typeof process !== 'undefined' ? process?.env?.VITE_PUBLIC_APP_URL : undefined) ||
+    'https://digitalmenu.daleel-al-suez.com';
 
   const content = `User-agent: *
 Allow: /

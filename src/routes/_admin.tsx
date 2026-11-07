@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createFileRoute, Outlet, useNavigate, useLocation, Link } from '@tanstack/react-router';
 import { useAuth } from '@/client/hooks/use-auth';
+import { sanitizeRedirectUrl } from '@/client/utils/redirect';
 import { businessService } from '@/server/services/business';
 import { Button } from '@/client/components/ui/Button';
 import {
@@ -26,14 +27,14 @@ function AdminProtectedLayout() {
   const [business, setBusiness] = useState<Business | null>(null);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
-  // 1. Route Protection Guard: Redirect unauthenticated visitors to login
+  // 1. Route Protection Guard: Redirect unauthenticated visitors to login safely
   useEffect(() => {
     if (!isLoading && !user) {
-      const currentPath = location.pathname;
+      const safePath = sanitizeRedirectUrl(location.pathname, '/dashboard');
       navigate({
         to: '/auth/login',
         search: {
-          redirect: currentPath !== '/dashboard' ? currentPath : undefined,
+          redirect: safePath !== '/dashboard' ? safePath : undefined,
         },
         replace: true,
       });

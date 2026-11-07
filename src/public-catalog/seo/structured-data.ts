@@ -1,4 +1,4 @@
-import type { PublicCatalogPayload } from '../../shared/schemas';
+import type { PublicCatalogPayload } from '../../shared/schemas.ts';
 
 /**
  * Resolves the primary canonical URL for a merchant's catalog.

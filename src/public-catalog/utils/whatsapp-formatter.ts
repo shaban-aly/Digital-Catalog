@@ -1,4 +1,4 @@
-import { formatCurrencySymbol } from '../../shared/currency';
+import { formatCurrencySymbol } from '../../shared/currency.ts';
 
 /**
  * WhatsApp Message Formatter for Direct Ordering & Inquiries
@@ -35,7 +35,14 @@ export function buildWhatsAppOrderUrl(details: WhatsAppOrderDetails): string {
   } = details;
 
   // Clean phone number: remove non-numeric characters (spaces, +, -, etc.)
-  const cleanPhone = storePhone.replace(/\D/g, '');
+  let cleanPhone = storePhone.replace(/\D/g, '');
+
+  // Normalize Egyptian mobile numbers to international format (201xxxxxxxxx)
+  if (cleanPhone.startsWith('01') && cleanPhone.length === 11) {
+    cleanPhone = `2${cleanPhone}`;
+  } else if (cleanPhone.startsWith('0020')) {
+    cleanPhone = cleanPhone.slice(2);
+  }
 
   const displayCurrency = formatCurrencySymbol(currency);
 

@@ -1,4 +1,5 @@
-import { supabase } from '../db/supabase';
+import { supabase } from '../db/supabase.ts';
+import type { LogQrScanEventParams } from '../../shared/types.ts';
 
 const KNOWN_BOT_PATTERNS = [
   /WhatsApp/i,
@@ -15,6 +16,16 @@ const KNOWN_BOT_PATTERNS = [
 ];
 
 /**
+ * Truncates an IPv4 address to /24 or IPv6 to /48 subnet for GDPR privacy compliance
+ */
+export function truncateIpSubnet(ipAddress: string): string {
+  if (!ipAddress) return '0.0.0.0';
+  return ipAddress.includes('.')
+    ? ipAddress.split('.').slice(0, 3).join('.') + '.0'
+    : ipAddress.split(':').slice(0, 3).join(':') + '::';
+}
+
+/**
  * Checks whether a User-Agent belongs to a known link preview bot or search crawler
  */
 export function isCrawlerOrBot(userAgent: string): boolean {
@@ -29,13 +40,9 @@ export function isCrawlerOrBot(userAgent: string): boolean {
 export async function generatePrivacyFingerprint(
   ipAddress: string,
   userAgent: string,
-  secretKey = process.env.ANALYTICS_HMAC_SECRET || 'fallback-secret-2026'
+  secretKey = (typeof process !== 'undefined' ? process?.env?.ANALYTICS_HMAC_SECRET : undefined) || 'fallback-secret-2026'
 ): Promise<string> {
-  // Truncate IPv4 (/24 subnet) or IPv6 (/48 subnet)
-  const truncatedIp = ipAddress.includes('.')
-    ? ipAddress.split('.').slice(0, 3).join('.') + '.0'
-    : ipAddress.split(':').slice(0, 3).join(':') + '::';
-
+  const truncatedIp = truncateIpSubnet(ipAddress);
   const todayIso = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   const rawString = `${todayIso}:${secretKey}:${truncatedIp}:${userAgent}`;
 
@@ -49,12 +56,7 @@ export async function generatePrivacyFingerprint(
 /**
  * Logs an asynchronous QR scan event into the database
  */
-export async function logQrScanEvent(params: {
-  qrCodeId: string;
-  ipAddress: string;
-  userAgent: string;
-  referrer?: string | null;
-}): Promise<void> {
+export async function logQrScanEvent(params: LogQrScanEventParams): Promise<void> {
   const { qrCodeId, ipAddress, userAgent, referrer } = params;
 
   try {

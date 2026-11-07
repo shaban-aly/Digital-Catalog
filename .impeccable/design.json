@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06T23:04:00+02:00",
+  "title": "Design System: Digital Menu — ديجيتال منيو",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "حبر السويس الداكن",
+        "canonical": "#0F172A",
+        "tonalRamp": ["#020408", "#060c14", "#0F172A", "#1e293b", "#334155", "#475569", "#64748b", "#94a3b8"]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "نص ثانوي",
+        "canonical": "#475569",
+        "tonalRamp": ["#0f172a", "#1e293b", "#334155", "#475569", "#64748b", "#94a3b8", "#cbd5e1", "#f1f5f9"]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "نص خافت",
+        "canonical": "#64748B",
+        "tonalRamp": ["#334155", "#475569", "#64748b", "#94a3b8", "#cbd5e1", "#e2e8f0", "#f1f5f9", "#f8fafc"]
+      },
+      "surface-app": {
+        "role": "neutral",
+        "displayName": "خلفية التطبيق",
+        "canonical": "#F8FAFC",
+        "tonalRamp": ["#cbd5e1", "#e2e8f0", "#f1f5f9", "#f8fafc", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]
+      },
+      "surface-card": {
+        "role": "neutral",
+        "displayName": "سطح البطاقة",
+        "canonical": "#FFFFFF",
+        "tonalRamp": ["#e2e8f0", "#f1f5f9", "#f8fafc", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]
+      },
+      "surface-subtle": {
+        "role": "neutral",
+        "displayName": "سطح خافت",
+        "canonical": "#F1F5F9",
+        "tonalRamp": ["#cbd5e1", "#e2e8f0", "#f1f5f9", "#f8fafc", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]
+      },
+      "border-subtle": {
+        "role": "neutral",
+        "displayName": "حد خفي",
+        "canonical": "#E2E8F0",
+        "tonalRamp": ["#94a3b8", "#cbd5e1", "#e2e8f0", "#f1f5f9", "#f8fafc", "#ffffff", "#ffffff", "#ffffff"]
+      },
+      "border-focus": {
+        "role": "primary",
+        "displayName": "حد التركيز",
+        "canonical": "#2563EB",
+        "tonalRamp": ["#1e3a8a", "#1d4ed8", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe", "#eff6ff"]
+      },
+      "whatsapp-green": {
+        "role": "secondary",
+        "displayName": "أخضر WhatsApp",
+        "canonical": "#25D366",
+        "tonalRamp": ["#064e3b", "#065f46", "#059669", "#10b981", "#25d366", "#34d399", "#6ee7b7", "#d1fae5"]
+      },
+      "whatsapp-dark": {
+        "role": "secondary",
+        "displayName": "أخضر WhatsApp المظلّل",
+        "canonical": "#128C7E",
+        "tonalRamp": ["#022c22", "#064e3b", "#065f46", "#128C7E", "#059669", "#10b981", "#34d399", "#a7f3d0"]
+      },
+      "promo-red": {
+        "role": "tertiary",
+        "displayName": "أحمر التنبيه",
+        "canonical": "#EF4444",
+        "tonalRamp": ["#7f1d1d", "#991b1b", "#b91c1c", "#dc2626", "#ef4444", "#f87171", "#fca5a5", "#fee2e2"]
+      },
+      "badge-available": {
+        "role": "tertiary",
+        "displayName": "أخضر الإتاحة",
+        "canonical": "#10B981",
+        "tonalRamp": ["#064e3b", "#065f46", "#059669", "#10b981", "#34d399", "#6ee7b7", "#a7f3d0", "#d1fae5"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "اسم المتجر، اسم المنتج في الـ drawer" },
+      "headline": { "displayName": "Headline", "purpose": "عناوين الأقسام في الإدارة" },
+      "title": { "displayName": "Title", "purpose": "أسماء المنتجات على البطاقات، تسميات الأزرار" },
+      "body": { "displayName": "Body", "purpose": "وصف المنتج، النصوص التوضيحية" },
+      "label": { "displayName": "Label", "purpose": "الشارات، عدادات الأصناف، الأسعار المشطوبة" }
+    },
+    "shadows": [
+      {
+        "name": "card-rest",
+        "value": "0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05)",
+        "purpose": "البطاقات في حالتها الساكنة — ورقة رُفعت قليلاً"
+      },
+      {
+        "name": "card-hover",
+        "value": "0 4px 16px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.06)",
+        "purpose": "البطاقات عند hover، المودالات، الشريط اللاصق"
+      },
+      {
+        "name": "modal",
+        "value": "0 20px 60px rgba(0,0,0,0.20), 0 8px 16px rgba(0,0,0,0.08)",
+        "purpose": "نوافذ تحميل الـ QR والـ overlay — الطبقة الأعلى"
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "انتقالات الحالة الافتراضية — hover، focus"
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0, 0, 0.2, 1)",
+        "purpose": "ظهور العناصر من الأسفل (drawer، toast)"
+      },
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "hover states، color transitions"
+      },
+      {
+        "name": "duration-standard",
+        "value": "200ms",
+        "purpose": "shadow transitions، الـ drawer"
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px", "purpose": "نقطة التحوّل الرئيسية — mobile-first" },
+      { "name": "max-catalog", "value": "512px", "purpose": "max-width للكتالوج العام" }
+    ]
+  },
+  "components": [
+    {
+      "name": "زر رئيسي",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "الإجراء الأساسي في الصفحة — تسجيل الدخول، حفظ، إرسال",
+      "html": "<button class=\"ds-btn-primary\">تسجيل الدخول</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 44px; min-height: 44px; padding: 0 16px; background-color: #0F172A; color: #FFFFFF; font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: opacity 150ms cubic-bezier(0.4,0,0.2,1), box-shadow 200ms cubic-bezier(0.4,0,0.2,1); box-shadow: 0 1px 3px rgba(0,0,0,0.08); direction: rtl; } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #2563EB; } .ds-btn-primary:disabled { pointer-events: none; opacity: 0.5; }"
+    },
+    {
+      "name": "زر WhatsApp",
+      "kind": "button",
+      "refersTo": "button-whatsapp",
+      "description": "زر التحويل الوحيد عبر WhatsApp — الأبرز في الكتالوج العام",
+      "html": "<button class=\"ds-btn-whatsapp\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z\"/><path d=\"M12 0C5.374 0 0 5.373 0 12c0 2.117.555 4.103 1.523 5.826L.057 23.887c-.058.232.118.408.35.35l6.102-1.455A11.934 11.934 0 0012 24c6.626 0 12-5.373 12-12S18.626 0 12 0zm0 21.818c-1.934 0-3.741-.528-5.284-1.448l-.379-.225-3.924.937.957-3.835-.247-.394A9.825 9.825 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z\"/></svg><span>تواصل عبر WhatsApp</span></button>",
+      "css": ".ds-btn-whatsapp { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; min-height: 44px; padding: 0 16px; background-color: #25D366; color: #FFFFFF; font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,0.30); transition: background-color 150ms cubic-bezier(0.4,0,0.2,1), box-shadow 200ms cubic-bezier(0.4,0,0.2,1); direction: rtl; } .ds-btn-whatsapp:hover { background-color: #128C7E; box-shadow: 0 4px 20px rgba(18,140,126,0.35); } .ds-btn-whatsapp:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #25D366; } .ds-btn-whatsapp:disabled { pointer-events: none; opacity: 0.5; }"
+    },
+    {
+      "name": "زر محيطي",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "إجراء ثانوي — تصفية، رابط خارجي، إلغاء",
+      "html": "<button class=\"ds-btn-outline\">عرض الكتالوج</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; height: 44px; min-height: 44px; padding: 0 16px; background-color: transparent; color: #0F172A; font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 14px; font-weight: 700; border: 1px solid #E2E8F0; border-radius: 8px; cursor: pointer; transition: background-color 150ms cubic-bezier(0.4,0,0.2,1), border-color 150ms cubic-bezier(0.4,0,0.2,1); direction: rtl; } .ds-btn-outline:hover { background-color: #F1F5F9; border-color: #0F172A; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #2563EB; }"
+    },
+    {
+      "name": "حقل إدخال",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "حقل نصي RTL مع تسمية علوية وحالات خطأ وتركيز",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-input-ex\">البريد الإلكتروني</label><input id=\"ds-input-ex\" class=\"ds-input\" type=\"email\" placeholder=\"name@example.com\" dir=\"ltr\"></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; width: 100%; text-align: right; direction: rtl; } .ds-field-label { font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 12px; font-weight: 700; color: #475569; } .ds-input { height: 44px; width: 100%; padding: 0 12px; background-color: #FFFFFF; color: #0F172A; font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 14px; border: 1px solid #E2E8F0; border-radius: 8px; outline: none; transition: border-color 150ms, box-shadow 150ms; box-sizing: border-box; } .ds-input::placeholder { color: #94A3B8; } .ds-input:focus { border-color: #2563EB; box-shadow: 0 0 0 2px rgba(37,99,235,0.20); } .ds-input:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "بطاقة المنتج",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "البطاقة الأساسية في الكتالوج — صورة + تفاصيل + سعر + CTA",
+      "html": "<div class=\"ds-product-card\"><div class=\"ds-product-img\">صورة</div><div class=\"ds-product-body\"><div class=\"ds-product-name\">شاورما دجاج كلاسيك</div><p class=\"ds-product-desc\">دجاج مشوي مع صوص ثوم بيت وخضار طازجة</p><div class=\"ds-product-footer\"><span class=\"ds-product-price\">45 <small>ج.م</small></span></div></div></div>",
+      "css": ".ds-product-card { display: flex; flex-direction: row; align-items: center; gap: 12px; padding: 12px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; transition: box-shadow 200ms cubic-bezier(0.4,0,0.2,1); direction: rtl; text-align: right; } .ds-product-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); } .ds-product-img { width: 96px; height: 96px; min-width: 96px; border-radius: 8px; background-color: #F1F5F9; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #94A3B8; } .ds-product-body { display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; min-height: 96px; } .ds-product-name { font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 14px; font-weight: 700; color: #0F172A; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; } .ds-product-desc { font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 12px; font-weight: 400; color: #475569; margin: 4px 0 0; line-height: 1.6; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; } .ds-product-footer { display: flex; align-items: baseline; justify-content: space-between; padding-top: 8px; border-top: 1px solid #E2E8F0; margin-top: auto; } .ds-product-price { font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 16px; font-weight: 800; color: #0F172A; } .ds-product-price small { font-size: 11px; font-weight: 700; color: #475569; margin-right: 2px; }"
+    },
+    {
+      "name": "Pill الفئة",
+      "kind": "chip",
+      "refersTo": "category-pill",
+      "description": "زر تصفية الفئات في شريط التنقل اللاصق",
+      "html": "<div style=\"display:flex;gap:8px;direction:rtl\"><button class=\"ds-pill ds-pill-active\">الكل</button><button class=\"ds-pill\">وجبات رئيسية <span class=\"ds-pill-count\">12</span></button><button class=\"ds-pill\">مشروبات <span class=\"ds-pill-count\">8</span></button></div>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; min-height: 38px; background-color: #FFFFFF; color: #475569; font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 12px; font-weight: 700; border: 1px solid #E2E8F0; border-radius: 9999px; cursor: pointer; transition: all 150ms cubic-bezier(0.4,0,0.2,1); white-space: nowrap; direction: rtl; } .ds-pill:hover { border-color: #0F172A; } .ds-pill.ds-pill-active { background-color: #0F172A; color: #FFFFFF; border-color: #0F172A; box-shadow: 0 1px 3px rgba(0,0,0,0.12); } .ds-pill-count { font-size: 10px; padding: 1px 6px; border-radius: 9999px; background-color: #F1F5F9; color: #94A3B8; } .ds-pill.ds-pill-active .ds-pill-count { background-color: rgba(255,255,255,0.20); color: #FFFFFF; }"
+    },
+    {
+      "name": "شارة",
+      "kind": "chip",
+      "refersTo": "badge-success",
+      "description": "شارة حالة صغيرة — متوفر، نفد، مميز",
+      "html": "<div style=\"display:flex;gap:8px;flex-wrap:wrap\"><span class=\"ds-badge ds-badge-success\">متوفر</span><span class=\"ds-badge ds-badge-danger\">نفد</span><span class=\"ds-badge ds-badge-default\">مميز</span></div>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-family: 'Cairo', 'Readex Pro', sans-serif; font-size: 11px; font-weight: 700; } .ds-badge-default { background-color: #F1F5F9; color: #0F172A; border: 1px solid transparent; } .ds-badge-success { background-color: #ecfdf5; color: #10B981; border: 1px solid #a7f3d0; } .ds-badge-danger { background-color: #fff1f2; color: #EF4444; border: 1px solid #fecdd3; } .ds-badge-outline { border: 1px solid #E2E8F0; color: #475569; background: transparent; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "الواجهة الرقمية الأمينة",
+    "overview": "هذا نظام تصميم يؤمن أن أفضل واجهة رقمية هي التي تحترم ما عرفه التاجر والزبون قبلها: القائمة المطبوعة بخطها الواضح وتصنيفها المنطقي وسعرها المكتوب بلا غموض. الفارق هو أن هذه القائمة تُحدَّث في ثوانٍ، تُقرأ على شاشة صغيرة في ضوء الشمس، وتنتهي بضغطة على WhatsApp. النظام يترجم ثقة القائمة الورقية إلى حضور رقمي حازم ومحترم — لا تزيين، لا إلهاء، كل بكسل يخدم قرار الشراء.\n\nالحضور أحادي النبرة: خلفيات فاتحة شبه بيضاء، نصوص داكنة عميقة، وضربة لون واحدة فاصلة. لا تدرجات لونية، لا بطاقات متداخلة، لا أرقام أقسام. الكثافة متوسطة — مناسبة لقراءة سريعة على الجوال بيد واحدة.\n\nالاتجاه RTL هو الافتراضي المُصمَّم له، لا الحالة الاستثنائية.",
+    "keyCharacteristics": [
+      "مسطّح كالقائمة المطبوعة — العمق طبقي واضح",
+      "RTL أولاً — العربية هي لغة التصميم الأم",
+      "وزن الخط هو الصوت — الحجم ثانوي",
+      "ضربة لون واحدة في الشاشة — الأخضر مقدّس للتحويل",
+      "44px حد أدنى لكل هدف لمس"
+    ],
+    "rules": [
+      {
+        "name": "قاعدة الصوت الواحد",
+        "body": "الأخضر يتكلم عن WhatsApp والإتاحة فحسب. أي استخدام ثانٍ للأخضر في الواجهة يُضعّف نداء التحويل.",
+        "section": "colors"
+      },
+      {
+        "name": "قاعدة الوزن",
+        "body": "الوزن 700+ يتكلم — لا تضعه دون سبب. النص الخافت يلتزم بوزن 400-600 ليبقى خافتاً.",
+        "section": "typography"
+      },
+      {
+        "name": "قاعدة الظل الحي",
+        "body": "الظل يتغير عند hover لا ينبثق من العدم — ينتقل من الخافت إلى المتوسط بـ transition-shadow 200ms ease-out.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "استخدم الأزرار الأخضر (WhatsApp) لهدف التحويل فقط — لا مكان آخر في أي شاشة",
+      "أعطِ كل هدف لمس ارتفاع 44px حداً أدنى",
+      "صِغ النصوص بالعربية الفصيحة المحكية الواضحة — اللهجة المصرية مقبولة في الـ CTAs",
+      "حافظ على التسلسل الهرمي: الوزن الثقيل (800) للعنوان، المتوسط (600-700) للتسميات، الخفيف (400) للوصف",
+      "ميّز المنتج غير المتوفر بـ overlay داكن وخفض الـ opacity — الكارت يبقى مرئياً لا يختفي",
+      "استخدم dir='ltr' على الأرقام والهواتف والأسعار الرقمية مضمنةً داخل RTL"
+    ],
+    "donts": [
+      "لا تضع تدرجاً لونياً على النصوص — التوكيد يأتي من الوزن أو الحجم",
+      "لا تداخل البطاقات — البطاقة تحتوي المحتوى مباشرة، لا بطاقة داخل بطاقة",
+      "لا تستخدم الأخضر إلا للـ WhatsApp والإتاحة",
+      "لا تضع eyebrow أو kicker فوق العناوين — العنوان يحمل وزنه بمفرده",
+      "لا تنشئ ظلاً بـ offset صفر وبلا blur",
+      "لا تقلص هدف اللمس دون 44×44px حتى لو بدا الحجم صحيحاً بصرياً",
+      "لا تضع عناصر RTL وLTR بجانب بعض دون تحديد dir صريح"
+    ]
+  }
+}

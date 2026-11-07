@@ -1,5 +1,5 @@
-import { qrService } from '../services/qr';
-import { logQrScanEvent } from '../services/analytics';
+import { qrService } from '../services/qr.ts';
+import { logQrScanEvent } from '../services/analytics.ts';
 
 /**
  * Cloudflare Worker Fast 302 QR Redirect Route

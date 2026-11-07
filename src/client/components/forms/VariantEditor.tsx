@@ -40,8 +40,9 @@ export function VariantEditor({ variants, onChange, currency }: VariantEditorPro
         <span className="text-xs font-semibold text-[var(--text-secondary)]">
           الأحجام أو المتغيرات (مثال: عادي، كبير / أبيض، أسود)
         </span>
-        <Button type="button" variant="secondary" size="sm" onClick={addVariant} className="gap-1">
-          <Plus size={14} /> إضافة حجم / خيار
+        <Button type="button" variant="secondary" size="md" onClick={addVariant} className="gap-1.5 min-h-[44px]">
+          <Plus size={16} aria-hidden="true" />
+          <span>إضافة حجم / خيار</span>
         </Button>
       </div>
 
@@ -50,7 +51,7 @@ export function VariantEditor({ variants, onChange, currency }: VariantEditorPro
           لا توجد متغيرات. سيتم استخدام السعر الأساسي للمنتج.
         </p>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2.5">
           {variants.map((variant, index) => (
             <div
               key={index}
@@ -60,25 +61,26 @@ export function VariantEditor({ variants, onChange, currency }: VariantEditorPro
                 placeholder="اسم الحجم (مثلاً: كبير)"
                 value={variant.name.ar}
                 onChange={(e) => updateVariant(index, { name: { ...variant.name, ar: e.target.value } })}
-                className="h-9"
+                className="h-11 text-sm"
               />
-              <div className="w-32">
+              <div className="w-36">
                 <Input
                   type="number"
                   placeholder={`السعر (${formatCurrencySymbol(currency)})`}
                   value={variant.price || ''}
                   onChange={(e) => updateVariant(index, { price: parseFloat(e.target.value) || 0 })}
-                  className="h-9"
+                  className="h-11 text-sm"
                 />
               </div>
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="md"
                 onClick={() => removeVariant(index)}
-                className="text-[var(--accent-promo)] h-9 w-9 p-0 shrink-0"
+                aria-label="حذف هذا الخيار"
+                className="text-[var(--accent-promo)] hover:bg-[var(--accent-promo)]/10 min-h-[44px] min-w-[44px] p-2 shrink-0"
               >
-                <Trash2 size={16} />
+                <Trash2 size={18} aria-hidden="true" />
               </Button>
             </div>
           ))}

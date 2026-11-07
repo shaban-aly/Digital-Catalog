@@ -1,13 +1,22 @@
-import { supabase } from '../db/supabase';
+import { supabase } from '../db/supabase.ts';
 
 export async function handleSitemapXml(): Promise<Response> {
   const primaryDomain =
-    process.env.VITE_PUBLIC_APP_URL || 'https://digitalmenu.daleel-al-suez.com';
+    (typeof process !== 'undefined' ? process?.env?.VITE_PUBLIC_APP_URL : undefined) ||
+    'https://digitalmenu.daleel-al-suez.com';
 
   const { data: catalogs } = await supabase
     .from('catalogs')
-    .select('slug, created_at')
-    .eq('is_published', true);
+    .select(`
+      slug,
+      created_at,
+      business:businesses!inner (
+        slug,
+        status
+      )
+    `)
+    .eq('is_published', true)
+    .eq('business.status', 'active');
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -22,12 +31,18 @@ export async function handleSitemapXml(): Promise<Response> {
   xml += `    <priority>1.0</priority>\n`;
   xml += `  </url>\n`;
 
-  // Published Catalogs
+  // Published Active Catalogs with Subdomain Canonical URLs
   if (catalogs) {
     for (const cat of catalogs) {
+      const bSlug = (cat.business as any)?.slug;
+      const storeUrl = bSlug
+        ? `https://${bSlug}.digitalmenu.daleel-al-suez.com/`
+        : `${primaryDomain}/c/${cat.slug}`;
+      const lastModDate = cat.created_at ? cat.created_at.split('T')[0] : today;
+
       xml += `  <url>\n`;
-      xml += `    <loc>${primaryDomain}/c/${cat.slug}</loc>\n`;
-      xml += `    <lastmod>${cat.created_at ? cat.created_at.split('T')[0] : today}</lastmod>\n`;
+      xml += `    <loc>${storeUrl}</loc>\n`;
+      xml += `    <lastmod>${lastModDate}</lastmod>\n`;
       xml += `    <changefreq>weekly</changefreq>\n`;
       xml += `    <priority>0.8</priority>\n`;
       xml += `  </url>\n`;

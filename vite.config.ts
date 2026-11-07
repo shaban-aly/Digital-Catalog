@@ -20,11 +20,12 @@ export default defineConfig({
     },
   },
   plugins: [
+    cloudflare({
+      configPath: './wrangler.jsonc',
+      viteEnvironment: { name: 'ssr' },
+    }),
     tailwindcss(),
     tanstackStart(),
     react(),
-    cloudflare({
-      configPath: './wrangler.jsonc',
-    }),
   ],
 });

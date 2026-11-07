@@ -1,7 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { supabase } from '../../server/db/supabase';
-import type { User, Session, AuthError } from '@supabase/supabase-js';
+import type { User, Session } from '@supabase/supabase-js';
+import { mapSupabaseError } from '../utils/auth-error-mapper';
+
+export { mapSupabaseError };
 
 export interface AuthState {
   user: User | null;
@@ -20,34 +23,6 @@ export interface AuthContextType extends AuthState {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-/**
- * Translates Supabase authentication errors into clear, friendly Arabic messages.
- */
-export function mapSupabaseError(error: AuthError | Error | string): string {
-  const msg = typeof error === 'string' ? error : error?.message || '';
-  const lower = msg.toLowerCase();
-
-  if (lower.includes('invalid login credentials') || lower.includes('invalid_grant')) {
-    return 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
-  }
-  if (lower.includes('user already registered') || lower.includes('already registered')) {
-    return 'هذا البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول.';
-  }
-  if (lower.includes('password should be at least') || lower.includes('password is too short')) {
-    return 'كلمة المرور يجب أن تتكون من 6 أحرف على الأقل.';
-  }
-  if (lower.includes('email not confirmed') || lower.includes('email_not_confirmed')) {
-    return 'يرجى تأكيد بريدك الإلكتروني أولاً عبر الرابط المرسل إلى صندوق الوارد.';
-  }
-  if (lower.includes('rate limit') || lower.includes('over_email_send_rate_limit')) {
-    return 'تم تجاوز الحد المسموح من المحاولات. يرجى الانتظار بضع دقائق ثم المحاولة مجدداً.';
-  }
-  if (lower.includes('network') || lower.includes('failed to fetch')) {
-    return 'تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.';
-  }
-  return msg || 'حدث خطأ أثناء معالجة المصادقة. يرجى المحاولة لاحقاً.';
-}
 
 export interface AuthProviderProps {
   children: ReactNode;

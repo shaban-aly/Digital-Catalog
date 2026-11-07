@@ -19,7 +19,7 @@ export function WhatsAppStickyBar({ storeName, storePhone }: WhatsAppStickyBarPr
     <div className="fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-[var(--border-subtle)] flex items-center justify-between gap-3 max-w-lg mx-auto shadow-lg">
       <div className="text-right">
         <span className="text-xs font-bold text-[var(--text-primary)] block">طلب أو استفسار سريع؟</span>
-        <span className="text-[10px] text-[var(--text-muted)]">تواصل مباشرة مع إدارة المتجر</span>
+        <span className="text-[11px] text-[var(--text-muted)]">تواصل مباشرة مع إدارة المتجر</span>
       </div>
 
       <Button

@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Share2, Phone } from 'lucide-react';
+import { useDialog } from '../../client/components/ui/Dialog';
 
 interface CatalogHeaderProps {
   business: {
@@ -11,12 +13,16 @@ interface CatalogHeaderProps {
 }
 
 export function CatalogHeader({ business }: CatalogHeaderProps) {
+  const dialog = useDialog();
+  const [coverFailed, setCoverFailed] = useState(false);
+  const [logoFailed, setLogoFailed] = useState(false);
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
           title: business.name,
-          text: `تصفح كتالوج ${business.name} الرقمي وقائمة الأسعار`,
+          text: `تصفح منيو ${business.name} الرقمي وقائمة الأسعار`,
           url: window.location.href,
         });
       } catch (err) {
@@ -25,7 +31,11 @@ export function CatalogHeader({ business }: CatalogHeaderProps) {
     } else {
       // Fallback: Copy to clipboard
       await navigator.clipboard.writeText(window.location.href);
-      alert('تم نسخ رابط الكتالوج إلى الحافظة بنجاح!');
+      await dialog.alert({
+        title: 'تم نسخ الرابط',
+        message: 'تم نسخ رابط الكتالوج إلى الحافظة بنجاح، يمكنك الآن لصقه ومشاركته مع عملائك.',
+        variant: 'success',
+      });
     }
   };
 
@@ -33,24 +43,25 @@ export function CatalogHeader({ business }: CatalogHeaderProps) {
     <header className="relative bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] text-right">
       {/* Cover Banner */}
       <div className="h-32 sm:h-44 w-full bg-slate-900 overflow-hidden relative">
-        {business.cover_url ? (
+        {business.cover_url && !coverFailed ? (
           <img
             src={business.cover_url}
             alt={business.name}
+            onError={() => setCoverFailed(true)}
             className="w-full h-full object-cover opacity-80"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-r from-slate-800 to-slate-950" />
         )}
 
-        {/* Share Button Floating */}
+        {/* Share Button Floating (44px touch target) */}
         <button
           type="button"
           onClick={handleShare}
-          aria-label="مشاركة الكتالوج"
-          className="absolute top-3 left-3 bg-black/40 backdrop-blur-md text-white p-2.5 rounded-full hover:bg-black/60 transition-colors shadow-sm"
+          aria-label="مشاركة رابط الكتالوج"
+          className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white min-w-[44px] min-h-[44px] rounded-full hover:bg-black/70 transition-colors shadow-sm flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
         >
-          <Share2 size={16} />
+          <Share2 size={18} />
         </button>
       </div>
 
@@ -59,33 +70,38 @@ export function CatalogHeader({ business }: CatalogHeaderProps) {
         {/* Logo and Name */}
         <div className="flex items-end gap-3 -mt-10 sm:-mt-12">
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[var(--radius-lg)] border-4 border-[var(--bg-surface)] bg-white overflow-hidden shadow-md shrink-0 flex items-center justify-center">
-            {business.logo_url ? (
-              <img src={business.logo_url} alt={business.name} className="w-full h-full object-cover" />
+            {business.logo_url && !logoFailed ? (
+              <img
+                src={business.logo_url}
+                alt={business.name}
+                onError={() => setLogoFailed(true)}
+                className="w-full h-full object-cover"
+              />
             ) : (
-              <span className="text-xl font-black text-[var(--primary)]">
+              <span className="text-xl sm:text-2xl font-black text-[var(--primary)]">
                 {business.name.slice(0, 2).toUpperCase()}
               </span>
             )}
           </div>
 
           <div className="pb-1">
-            <h1 className="text-lg sm:text-xl font-extrabold text-[var(--text-primary)]">
+            <h1 className="text-lg sm:text-xl font-black text-[var(--text-primary)]">
               {business.name}
             </h1>
-            <p className="text-xs text-[var(--text-muted)] mt-0.5">
-              قائمة الأسعار والمنتجات الرسمية
+            <p className="text-xs text-[var(--text-secondary)] font-semibold mt-0.5">
+              المنيو الإلكتروني وقائمة الأسعار الرسمية
             </p>
           </div>
         </div>
 
-        {/* Contact info pill */}
+        {/* Contact info pill (44px touch target) */}
         {business.phone_number && (
           <div className="flex items-center gap-2 self-start sm:self-auto">
             <a
               href={`tel:${business.phone_number}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border-subtle)] text-xs font-semibold text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)]"
+              className="inline-flex items-center gap-2 px-3.5 py-2 min-h-[44px] rounded-full border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-xs font-bold text-[var(--text-secondary)] hover:bg-[var(--bg-surface-subtle)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--border-focus)]"
             >
-              <Phone size={13} className="text-[var(--primary)]" />
+              <Phone size={14} className="text-[var(--primary)]" aria-hidden="true" />
               <span dir="ltr">{business.phone_number}</span>
             </a>
           </div>

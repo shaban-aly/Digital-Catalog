@@ -1,4 +1,4 @@
-import { supabase } from '../db/supabase';
+import { supabase } from '../db/supabase.ts';
 
 const CHARACTERS = '23456789abcdefghjkmnpqrstuvwxyz'; // Base32 unambiguous charset
 
@@ -42,8 +42,8 @@ export class QRService {
 
   constructor() {
     this.appBaseUrl =
-      import.meta.env.VITE_PUBLIC_APP_URL ||
-      process.env.VITE_PUBLIC_APP_URL ||
+      (typeof process !== 'undefined' ? process.env?.VITE_PUBLIC_APP_URL : undefined) ||
+      (typeof import.meta.env !== 'undefined' ? import.meta.env.VITE_PUBLIC_APP_URL : undefined) ||
       'https://digitalmenu.daleel-al-suez.com';
   }
 
@@ -170,10 +170,16 @@ export class QRService {
       return null;
     }
 
-    const catalogSlug = (qr.catalog as any).slug;
+    const catalogData = qr.catalog as any;
+    const businessSlug = catalogData?.business?.slug;
+    const catalogSlug = catalogData?.slug;
     const cleanBase = this.appBaseUrl.replace(/\/+$/, '');
+    const destinationUrl = businessSlug
+      ? `https://${businessSlug.toLowerCase()}.digitalmenu.daleel-al-suez.com/`
+      : `${cleanBase}/c/${catalogSlug}`;
+
     return {
-      destinationUrl: `${cleanBase}/c/${catalogSlug}`,
+      destinationUrl,
       qrId: qr.id,
     };
   }

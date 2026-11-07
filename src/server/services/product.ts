@@ -1,10 +1,10 @@
-import { supabase } from '../db/supabase';
-import type { CreateProductInput } from '../../shared/schemas';
-import type { Product } from '../../shared/types';
+import { supabase } from '../db/supabase.ts';
+import type { CreateProductInput, UpdateProductInput } from '../../shared/schemas.ts';
+import type { Product } from '../../shared/types.ts';
 
 export class ProductService {
   /**
-   * Retrieves all master products for a business with their relations
+   * Retrieves all non-archived products for a business with their relations
    */
   async getProducts(businessId: string): Promise<Product[]> {
     const { data, error } = await supabase
@@ -31,8 +31,34 @@ export class ProductService {
   }
 
   /**
-   * Creates a product with its variants, option groups, and media assets
-   * Enforces the 100-product quota via atomic database trigger and application check.
+   * Retrieves a single product with full relational hierarchy
+   */
+  async getProductById(productId: string): Promise<Product | null> {
+    const { data, error } = await supabase
+      .from('products')
+      .select(`
+        *,
+        category:categories(id, name),
+        variants:product_variants(*),
+        option_groups:product_option_groups(
+          *,
+          values:product_option_values(*)
+        ),
+        media:product_media(*)
+      `)
+      .eq('id', productId)
+      .maybeSingle();
+
+    if (error || !data) {
+      return null;
+    }
+
+    return data as Product;
+  }
+
+  /**
+   * Creates a product with its variants, option groups, and media assets.
+   * Enforces the 100-product quota on the Free tier.
    */
   async createProduct(businessId: string, input: CreateProductInput): Promise<Product> {
     const {
@@ -51,7 +77,22 @@ export class ProductService {
       image_urls,
     } = input;
 
-    // 1. Insert Master Product Record (Database Trigger enforces 100 max product quota atomically)
+    // 0. Quota Check (Max 100 products on Free Plan)
+    const { count, error: countError } = await supabase
+      .from('products')
+      .select('*', { count: 'exact', head: true })
+      .eq('business_id', businessId)
+      .neq('status', 'archived');
+
+    if (countError) {
+      throw new Error(`Failed to check product count: ${countError.message}`);
+    }
+
+    if ((count ?? 0) >= 100) {
+      throw new Error('تم الوصول للحد الأقصى للمنتجات في باقة الانطلاق الأساسية (100 منتج).');
+    }
+
+    // 1. Insert Master Product Record
     const { data: product, error: productError } = await supabase
       .from('products')
       .insert({
@@ -131,7 +172,7 @@ export class ProductService {
         product_id: product.id,
         storage_path: url,
         public_url: url,
-        file_size_bytes: 85000, // Estimated WebP compressed size
+        file_size_bytes: 85000,
         is_cover: imgIndex === 0,
         sort_order: imgIndex,
       }));
@@ -163,18 +204,22 @@ export class ProductService {
   /**
    * Updates an existing product
    */
-  async updateProduct(productId: string, updates: Partial<CreateProductInput>): Promise<void> {
-    const { error } = await supabase
+  async updateProduct(productId: string, updates: UpdateProductInput): Promise<Product> {
+    const { data, error } = await supabase
       .from('products')
       .update({
         ...updates,
         updated_at: new Date().toISOString(),
       })
-      .eq('id', productId);
+      .eq('id', productId)
+      .select('*')
+      .single();
 
-    if (error) {
-      throw new Error(`Failed to update product: ${error.message}`);
+    if (error || !data) {
+      throw new Error(`Failed to update product: ${error?.message || 'Database error'}`);
     }
+
+    return data as Product;
   }
 
   /**
@@ -193,6 +238,59 @@ export class ProductService {
 
     // Also update catalog item flag
     await supabase.from('catalog_items').update({ is_available: isAvailable }).eq('product_id', productId);
+  }
+
+  /**
+   * Deletes a product, cascading to child variants and option groups
+   */
+  async deleteProduct(productId: string): Promise<void> {
+    const { error } = await supabase.from('products').delete().eq('id', productId);
+    if (error) {
+      throw new Error(`Failed to delete product: ${error.message}`);
+    }
+  }
+
+  /**
+   * Deterministically calculates customer price based on base, variant, option deltas, and catalog override
+   */
+  calculateLineItemPrice(params: {
+    basePrice?: number | null;
+    variantPrice?: number | null;
+    optionDeltas?: number[];
+    catalogOverride?: number | null;
+  }): number {
+    const { basePrice, variantPrice, optionDeltas = [], catalogOverride } = params;
+
+    let itemBase = 0;
+    if (catalogOverride !== undefined && catalogOverride !== null) {
+      itemBase = catalogOverride;
+    } else if (variantPrice !== undefined && variantPrice !== null) {
+      itemBase = variantPrice;
+    } else if (basePrice !== undefined && basePrice !== null) {
+      itemBase = basePrice;
+    }
+
+    const optionsSum = optionDeltas.reduce((sum, delta) => sum + (delta || 0), 0);
+    return Math.round((itemBase + optionsSum + Number.EPSILON) * 100) / 100;
+  }
+
+  /**
+   * Validates customer selections against option group min/max constraints
+   */
+  validateOptionGroupSelections(
+    group: { min_selections: number; max_selections: number; is_required: boolean },
+    selectedCount: number
+  ): { valid: boolean; error?: string } {
+    if (group.is_required && selectedCount < Math.max(1, group.min_selections)) {
+      return { valid: false, error: 'يرجى اختيار الخيارات المطلوبة' };
+    }
+    if (selectedCount < group.min_selections) {
+      return { valid: false, error: `يجب اختيار ${group.min_selections} خيارات على الأقل` };
+    }
+    if (selectedCount > group.max_selections) {
+      return { valid: false, error: `الحد الأقصى للاختيارات هو ${group.max_selections}` };
+    }
+    return { valid: true };
   }
 }
 

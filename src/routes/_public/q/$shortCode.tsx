@@ -33,7 +33,7 @@ function QRRedirectComponent() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg-app)] text-center p-6">
       <div className="space-y-3">
-        <div className="w-10 h-10 border-4 border-[var(--primary-teal)] border-t-transparent rounded-full animate-spin mx-auto" />
+        <div className="w-10 h-10 border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin mx-auto" />
         <p className="text-base font-semibold text-[var(--text-primary)]">جاري توجيهك إلى الكتالوج...</p>
       </div>
     </div>

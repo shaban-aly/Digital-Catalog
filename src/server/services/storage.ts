@@ -1,4 +1,4 @@
-import { supabase } from '../db/supabase';
+import { supabase } from '../db/supabase.ts';
 
 export interface StorageUploadResult {
   path: string;
@@ -31,8 +31,8 @@ export class SupabaseStorageProvider implements IStorageProvider {
   constructor(bucket = BUCKET_NAME) {
     this.bucket = bucket;
     this.customDomainBase =
-      import.meta.env.VITE_PUBLIC_APP_URL ||
-      process.env.VITE_PUBLIC_APP_URL ||
+      (typeof process !== 'undefined' ? process.env?.VITE_PUBLIC_APP_URL : undefined) ||
+      (typeof import.meta.env !== 'undefined' ? import.meta.env.VITE_PUBLIC_APP_URL : undefined) ||
       'https://digitalmenu.daleel-al-suez.com';
   }
 
